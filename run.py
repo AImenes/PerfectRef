@@ -3,6 +3,7 @@
 # This code is written by Anders Imenes
 from engine.algorithm.ontologyParser import *
 from engine.logic.queryParser import *
+from engine.structure
 import owlready2
 
 def main():
