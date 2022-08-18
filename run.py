@@ -2,7 +2,7 @@
 # 
 # This code is written by Anders Imenes
 from engine.utils.ontology_parser import loadOntology
-from engine.query_parser import query_parser
+from engine.query_parser import parse_query
 
 import owlready2
 
@@ -10,7 +10,7 @@ def main():
 	#Load Ontology
 	#onto = loadOntology("ontologies/mytest.owl")
 	query_string = "q(?x) :- Pizza(?x)^hasIngredient(?x, ?y)"
-	q = query_parser(query_string)
+	q = parse_query(query_string)
 
 	#p = QueryParser(onto, q)
 	#p.showTail()
