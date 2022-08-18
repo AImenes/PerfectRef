@@ -22,16 +22,16 @@ def parse_head(head_string):
 
 def parse_body(body_string):
 	atom_str_list = body_string.split("^")
-	return [parse_atom for atom_str in atom_str_list] 
+	return [parse_atom(atom_str) for atom_str in atom_str_list] 
 
 def parse_atom(atom_string):
 	print(atom_string)
 	name, arity, entry_str_list = extract_entry_tokens(atom_string)
 	print(name, arity, entry_str_list)
-	return Atom(name, [parse_entry for token in entry_str_list])
+	return Atom(name, [parse_entry(token) for token in entry_str_list])
 
 def parse_entry(entry_string):
-	if entry_string.starts_with("?"):
+	if entry_string.startswith("?"):
 		return Variable(entry_string)
 	return Constant(entry_string)
 

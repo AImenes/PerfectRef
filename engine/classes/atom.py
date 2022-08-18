@@ -1,5 +1,5 @@
 class Atom:
-	def __init__(self, atom_string):
+	def __init__(self, name, entry_list):
 		self.name = name
 
 	def get_name(self):
