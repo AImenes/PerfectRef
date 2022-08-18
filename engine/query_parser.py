@@ -62,7 +62,7 @@ def extract_entry_tokens(atom_string):
 			arity = 1
 			entries_list.append(entries)
 		else:
-			entries = atom_string.split(",")
+			entries = entries.split(",")
 			for e in entries:
 				entries_list.append(e)
 			arity = len(entries)
