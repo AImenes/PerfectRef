@@ -9,9 +9,11 @@ from .classes.entry import Constant
 
 def query_parser(query_string):
 	q = Query(query_string)
-	head = q.get_head()
-	body = q.get_body()
-	print(body)
+	head = Atom(q.get_head())
+	body = list()
+	
+	for g in q.get_body():
+		body.append(Atom(g))
 
 	return True
 	
