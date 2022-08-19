@@ -4,14 +4,17 @@ class Entry:
 		self.name = name
 		self.isBound = True
 
+	def __repr__(self):
+		return repr(vars(self))
+
 
 #Subclass Variable
 class Variable(Entry):
 	def __init__(self, name):
-		self.bound = True
-		self.bind = True
-		self.unbind = False
 		super().__init__(name)
+	#	self.bound = True
+	#	self.bind = True
+	#	self.unbind = False
 
 
 	def to_string(self):

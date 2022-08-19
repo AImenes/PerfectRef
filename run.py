@@ -11,7 +11,7 @@ def main():
 	#onto = loadOntology("ontologies/mytest.owl")
 	query_string = "q(?x) :- Pizza(?x)^hasIngredient(?x, ?y)"
 	q = parse_query(query_string)
-	print(q)
+	print(vars(q)['head'])
 
 	#p = QueryParser(onto, q)
 	#p.showTail()

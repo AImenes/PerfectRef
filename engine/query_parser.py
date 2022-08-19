@@ -25,9 +25,9 @@ def parse_body(body_string):
 	return [parse_atom(atom_str) for atom_str in atom_str_list] 
 
 def parse_atom(atom_string):
-	print(atom_string)
+	#print(atom_string)
 	name, arity, entry_str_list = extract_entry_tokens(atom_string)
-	print(name, arity, entry_str_list)
+	#print(name, arity, entry_str_list)
 	return Atom(name, [parse_entry(token) for token in entry_str_list])
 
 def parse_entry(entry_string):
@@ -68,8 +68,3 @@ def extract_entry_tokens(atom_string):
 			arity = len(entries)
 
 	return name,arity,entries_list
-
-
-
-
-
