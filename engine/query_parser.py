@@ -1,41 +1,69 @@
-import owlready2
 from .classes.query import Query
 from .classes.atom import Atom
 from .classes.entry import Entry
 from .classes.entry import Variable
 from .classes.entry import Constant
 
-#Example
-# q(?x) :- Pizza(?x),hasIngredient(?x,?y)
+"""
+	METHODS FOR PARSING
+
+		parse_query				Splits head and body, creates a dictionary for variables (which is within the object). Return type Class:Query
+
+		parse_head				Since the head per definition contains distinguished variables, the boolean variable is_distinguised is set to True. 
+ 								This is passed to Atom-parser. It returns a Class:Atom, 
+
+		parse_body				Since the head per definition contains distinguished variables, the boolean variable in the body is_distinguised is set to False. 
+								This is passed to Atom-parser. It returns a list of Class:Atom.
+
+		parse_atom				Extracts entry tokens from a Atom, and returns an Atom with a list of entries. Returns either 
+
+		parse_entry				Parses each entry as either a Variable or Constant. Returns a Class:Variable or Class:Constant
+
+
+	METHODS FOR UTILITIES
+
+		extract_entry_tokens	Parses the entire atom, and extracts the variables or constants
 	
+		parse_dict_of_variables				Checks if variable already exists. That is, a shared (bound) variable. Returns Boolean value.
+
+"""
+
+## PARSING
 def parse_query(query_string):
 	#Split head and body
 	head_string, body_string = query_string.split(":-")
+	dictionary_of_variables = {}
+
 	#Remove trailing spaces
 	head_string = head_string.strip()
 	body_string = body_string.strip()
+
 	#Return a Query-object
-	return Query(parse_head(head_string), parse_body(body_string))
+	return Query(parse_head(head_string, dictionary_of_variables
+), parse_body(body_string, dictionary_of_variables), dictionary_of_variables)
 
-def parse_head(head_string):
-	return parse_atom(head_string) 
+def parse_head(head_string,dictionary_of_variables):
+	is_distinguished = True 
+	return parse_atom(head_string,is_distinguished, dictionary_of_variables) 
 
-def parse_body(body_string):
+def parse_body(body_string, dictionary_of_variables):
+	is_distinguished = False
 	atom_str_list = body_string.split("^")
-	return [parse_atom(atom_str) for atom_str in atom_str_list] 
+	return [parse_atom(atom_str,is_distinguished, dictionary_of_variables) for atom_str in atom_str_list] 
 
-def parse_atom(atom_string):
+def parse_atom(atom_string, is_distinguished, dictionary_of_variables):
 	#print(atom_string)
 	name, arity, entry_str_list = extract_entry_tokens(atom_string)
 	#print(name, arity, entry_str_list)
-	return Atom(name, [parse_entry(token) for token in entry_str_list])
+	return Atom(name, [parse_entry(token, is_distinguished, dictionary_of_variables) for token in entry_str_list])
 
-def parse_entry(entry_string):
+def parse_entry(entry_string, is_distinguished, dictionary_of_variables):
 	if entry_string.startswith("?"):
-		return Variable(entry_string)
+		return Variable(entry_string, parse_dict_of_variables(entry_string, is_distinguished, dictionary_of_variables))
 	return Constant(entry_string)
 
-#Utils
+
+#UTILITIES
 def extract_entry_tokens(atom_string):
 	entries_list = list()
 	arity = 0
@@ -68,3 +96,27 @@ def extract_entry_tokens(atom_string):
 			arity = len(entries)
 
 	return name,arity,entries_list
+
+
+def parse_dict_of_variables(entry_string, is_distinguished, dictionary_of_variables):
+	
+	# If the variable is known
+	if entry_string in dictionary_of_variables:
+		if dictionary_of_variables[entry_string]['in_body']:
+			dictionary_of_variables[entry_string]['is_shared'] = True
+		else:
+			dictionary_of_variables[entry_string]['in_body'] = True
+
+	#If the variable is new
+	else:
+		if is_distinguished:
+			dictionary_of_variables[entry_string] = {'is_bound':False, 'is_distinguished':True, 'in_body': False, 'is_shared':False }
+		else:
+			dictionary_of_variables[entry_string] = {'is_bound':False, 'is_distinguished':False, 'in_body': True, 'is_shared':False }
+		
+	if dictionary_of_variables[entry_string]['is_shared'] or dictionary_of_variables[entry_string]['is_distinguished']:
+		dictionary_of_variables[entry_string]['is_bound'] = True
+
+	return dictionary_of_variables[entry_string]
+
+

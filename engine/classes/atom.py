@@ -9,3 +9,5 @@ class Atom:
 	def get_name(self):
 		return self.name
 
+	def get_entries(self):
+		return self.entries
