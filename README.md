@@ -1,6 +1,6 @@
 # PerfectRef
 
-PythonImplementation
+Run the run.py file.
 
 ## Getting started
 

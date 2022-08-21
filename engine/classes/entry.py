@@ -6,6 +6,9 @@ class Entry:
 	def __repr__(self):
 		return repr(vars(self))
 
+	def get_org_name(self):
+		return self.original_entry_name
+
 
 #Subclass Variable
 class Variable(Entry):
@@ -21,7 +24,31 @@ class Variable(Entry):
 			self.represented_name = "?_"
 		else:
 			self.represented_name = self.original_entry_name
-		
+
+	def get_represented_name(self):
+		return self.represented_name
+
+	def get_distinguished(self):
+		return self.distinguished
+	
+	def get_body(self):
+		return self.body
+
+	def get_shared(self):
+		return self.shared
+
+	def get_bound(self):
+		return self.bound
+
+	def get_unbound(self):
+		return self.unbound
+
+	def update_values(self, distinguished, body, shared, bound):
+		self.distinguished = distinguished
+		self.body = body
+		self.shared = shared
+		self.bound = bound
+		self.unbound = not self.bound
 
 
 #Subclass Constant
