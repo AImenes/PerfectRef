@@ -106,7 +106,6 @@ def extract_entry_tokens(atom_string):
 
 	return name,arity,entries_list
 
-
 def parse_dict_of_variables(entry_string, is_distinguished, dictionary_of_variables):
 	
 	# If the variable is known

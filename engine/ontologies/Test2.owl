@@ -1,0 +1,53 @@
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+
+Ontology: <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology>
+
+
+ObjectProperty: <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#hasTutor>
+
+    Domain: 
+        <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Student>
+    
+    Range: 
+        <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Professor>
+    
+    
+ObjectProperty: <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#teachesTo>
+
+    Domain: 
+        <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Professor>
+    
+    Range: 
+        <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Student>
+    
+    
+Class: <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Professor>
+
+    DisjointWith: 
+        <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Student>
+    
+    
+Class: <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Student>
+
+    DisjointWith: 
+        <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Professor>
+    
+    
+Individual: <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Tom>
+
+    Types: 
+        <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Professor>
+    
+    
+Individual: <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#William>
+
+    Types: 
+        <http://www.semanticweb.org/andersimenes/ontologies/2022/7/TestOntology#Student>
+    
+    

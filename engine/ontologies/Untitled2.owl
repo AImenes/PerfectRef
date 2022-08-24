@@ -1,0 +1,1598 @@
+Prefix: : <http://www.co-ode.org/ontologies/pizza/pizza.owl#>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: pizza: <http://www.co-ode.org/ontologies/pizza/pizza.owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+
+Ontology: <http://www.co-ode.org/ontologies/pizza/pizza.owl>
+
+
+Annotations: 
+    rdfs:comment "An example ontology that contains all constructs required for the various versions of the Pizza Tutorial run by Manchester University (see http://www.co-ode.org/resources/tutorials/)"@en,
+    owl:versionInfo "v.1.4. Added Food class (used in domain/range of hasIngredient), Added several hasCountryOfOrigin restrictions on pizzas, Made hasTopping invers functional"@en,
+    owl:versionInfo "v.1.5. Removed protege.owl import and references. Made ontology URI date-independent"@en,
+    owl:versionInfo "version 1.5"^^xsd:string
+
+AnnotationProperty: owl:versionInfo
+
+    
+AnnotationProperty: rdfs:comment
+
+    
+AnnotationProperty: rdfs:label
+
+    
+Datatype: rdf:PlainLiteral
+
+    
+Datatype: xsd:string
+
+    
+ObjectProperty: pizza:hasBase
+
+    SubPropertyOf: 
+        pizza:hasIngredient
+    
+    Characteristics: 
+        Functional,
+        InverseFunctional
+    
+    Domain: 
+        pizza:Pizza
+    
+    Range: 
+        pizza:PizzaBase
+    
+    InverseOf: 
+        pizza:isBaseOf
+    
+    
+ObjectProperty: pizza:hasCountryOfOrigin
+
+    
+ObjectProperty: pizza:hasIngredient
+
+    Annotations: 
+        rdfs:comment "NB Transitive - the ingredients of ingredients are ingredients of the whole"@en
+    
+    Characteristics: 
+        Transitive
+    
+    Domain: 
+        pizza:Food
+    
+    Range: 
+        pizza:Food
+    
+    InverseOf: 
+        pizza:isIngredientOf
+    
+    
+ObjectProperty: pizza:hasSpiciness
+
+    Annotations: 
+        rdfs:comment "A property created to be used with the ValuePartition - Spiciness."@en
+    
+    Characteristics: 
+        Functional
+    
+    Range: 
+        pizza:Spiciness
+    
+    
+ObjectProperty: pizza:hasTopping
+
+    Annotations: 
+        rdfs:comment "Note that hasTopping is inverse functional because isToppingOf is functional"@en
+    
+    SubPropertyOf: 
+        pizza:hasIngredient
+    
+    Characteristics: 
+        InverseFunctional
+    
+    Domain: 
+        pizza:Pizza
+    
+    Range: 
+        pizza:PizzaTopping
+    
+    InverseOf: 
+        pizza:isToppingOf
+    
+    
+ObjectProperty: pizza:isBaseOf
+
+    SubPropertyOf: 
+        pizza:isIngredientOf
+    
+    Characteristics: 
+        Functional,
+        InverseFunctional
+    
+    Domain: 
+        pizza:PizzaBase
+    
+    Range: 
+        pizza:Pizza
+    
+    InverseOf: 
+        pizza:hasBase
+    
+    
+ObjectProperty: pizza:isIngredientOf
+
+    Annotations: 
+        rdfs:comment "The inverse property tree to hasIngredient - all subproperties and attributes of the properties should reflect those under hasIngredient."@en
+    
+    Characteristics: 
+        Transitive
+    
+    Domain: 
+        pizza:Food
+    
+    Range: 
+        pizza:Food
+    
+    InverseOf: 
+        pizza:hasIngredient
+    
+    
+ObjectProperty: pizza:isToppingOf
+
+    Annotations: 
+        rdfs:comment "Any given instance of topping should only be added to a single pizza (no cheap half-measures on our pizzas)"@en
+    
+    SubPropertyOf: 
+        pizza:isIngredientOf
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        pizza:PizzaTopping
+    
+    Range: 
+        pizza:Pizza
+    
+    InverseOf: 
+        pizza:hasTopping
+    
+    
+Class: owl:Thing
+
+    
+Class: pizza:American
+
+    Annotations: 
+        rdfs:label "Americana"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:PeperoniSausageTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:MozzarellaTopping or pizza:PeperoniSausageTopping or pizza:TomatoTopping),
+        pizza:hasCountryOfOrigin value pizza:America
+    
+    DisjointWith: 
+        pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:AmericanHot
+
+    Annotations: 
+        rdfs:label "AmericanaPicante"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:HotGreenPepperTopping,
+        pizza:hasTopping some pizza:JalapenoPepperTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:PeperoniSausageTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:HotGreenPepperTopping or pizza:JalapenoPepperTopping or pizza:MozzarellaTopping or pizza:PeperoniSausageTopping or pizza:TomatoTopping),
+        pizza:hasCountryOfOrigin value pizza:America
+    
+    DisjointWith: 
+        pizza:American, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:AnchoviesTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeAnchovies"@pt
+    
+    SubClassOf: 
+        pizza:FishTopping
+    
+    DisjointWith: 
+        pizza:MixedSeafoodTopping, pizza:PrawnsTopping
+    
+    
+Class: pizza:ArtichokeTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeArtichoke"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:AsparagusTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeAspargos"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:Cajun
+
+    Annotations: 
+        rdfs:label "Cajun"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:OnionTopping,
+        pizza:hasTopping some pizza:PeperonataTopping,
+        pizza:hasTopping some pizza:PrawnsTopping,
+        pizza:hasTopping some pizza:TobascoPepperSauce,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:MozzarellaTopping or pizza:OnionTopping or pizza:PeperonataTopping or pizza:PrawnsTopping or pizza:TobascoPepperSauce or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:CajunSpiceTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeCajun"@pt
+    
+    SubClassOf: 
+        pizza:HerbSpiceTopping,
+        pizza:hasSpiciness some pizza:Hot
+    
+    DisjointWith: 
+        pizza:RosemaryTopping
+    
+    
+Class: pizza:CaperTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeCaper"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:Capricciosa
+
+    Annotations: 
+        rdfs:label "Capricciosa"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:AnchoviesTopping,
+        pizza:hasTopping some pizza:CaperTopping,
+        pizza:hasTopping some pizza:HamTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:OliveTopping,
+        pizza:hasTopping some pizza:PeperonataTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:AnchoviesTopping or pizza:CaperTopping or pizza:HamTopping or pizza:MozzarellaTopping or pizza:OliveTopping or pizza:PeperonataTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:Caprina
+
+    Annotations: 
+        rdfs:label "Caprina"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:GoatsCheeseTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:SundriedTomatoTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:GoatsCheeseTopping or pizza:MozzarellaTopping or pizza:SundriedTomatoTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:CheeseTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeQueijo"@pt
+    
+    SubClassOf: 
+        pizza:PizzaTopping
+    
+    DisjointWith: 
+        pizza:FishTopping, pizza:FruitTopping, pizza:HerbSpiceTopping, pizza:MeatTopping, pizza:NutTopping, pizza:SauceTopping, pizza:VegetableTopping
+    
+    
+Class: pizza:CheeseyPizza
+
+    Annotations: 
+        rdfs:comment "Any pizza that has at least 1 cheese topping."@en,
+        rdfs:label "PizzaComQueijo"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (pizza:hasTopping some pizza:CheeseTopping)
+    
+    
+Class: pizza:CheeseyVegetableTopping
+
+    Annotations: 
+        rdfs:comment "This class will be inconsistent. This is because we have given it 2 disjoint parents, which means it could never have any members (as nothing can simultaneously be a CheeseTopping and a VegetableTopping). NB Called ProbeInconsistentTopping in the ProtegeOWL Tutorial."@en,
+        rdfs:label "CoberturaDeQueijoComVegetais"@pt
+    
+    SubClassOf: 
+        pizza:CheeseTopping,
+        pizza:VegetableTopping
+    
+    
+Class: pizza:ChickenTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeFrango"@pt
+    
+    SubClassOf: 
+        pizza:MeatTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:HamTopping, pizza:HotSpicedBeefTopping, pizza:PeperoniSausageTopping
+    
+    
+Class: pizza:Country
+
+    Annotations: 
+        rdfs:comment "A class that is equivalent to the set of individuals that are described in the enumeration - ie Countries can only be either America, England, France, Germany or Italy and nothing else. Note that these individuals have been asserted to be allDifferent from each other."@en,
+        rdfs:label "Pais"@pt
+    
+    EquivalentTo: 
+        pizza:DomainConcept
+         and ({pizza:America , pizza:England , pizza:France , pizza:Germany , pizza:Italy})
+    
+    
+Class: pizza:DeepPanBase
+
+    Annotations: 
+        rdfs:label "BaseEspessa"@pt
+    
+    SubClassOf: 
+        pizza:PizzaBase
+    
+    DisjointWith: 
+        pizza:ThinAndCrispyBase
+    
+    
+Class: pizza:DomainConcept
+
+    DisjointWith: 
+        pizza:ValuePartition
+    
+    
+Class: pizza:Fiorentina
+
+    Annotations: 
+        rdfs:label "Fiorentina"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:GarlicTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:OliveTopping,
+        pizza:hasTopping some pizza:ParmesanTopping,
+        pizza:hasTopping some pizza:SpinachTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:GarlicTopping or pizza:MozzarellaTopping or pizza:OliveTopping or pizza:ParmesanTopping or pizza:SpinachTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:FishTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDePeixe"@pt
+    
+    SubClassOf: 
+        pizza:PizzaTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:CheeseTopping, pizza:FruitTopping, pizza:HerbSpiceTopping, pizza:MeatTopping, pizza:NutTopping, pizza:SauceTopping, pizza:VegetableTopping
+    
+    
+Class: pizza:Food
+
+    SubClassOf: 
+        pizza:DomainConcept
+    
+    
+Class: pizza:FourCheesesTopping
+
+    Annotations: 
+        rdfs:label "CoberturaQuatroQueijos"@pt
+    
+    SubClassOf: 
+        pizza:CheeseTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:GoatsCheeseTopping, pizza:GorgonzolaTopping, pizza:MozzarellaTopping, pizza:ParmesanTopping
+    
+    
+Class: pizza:FourSeasons
+
+    Annotations: 
+        rdfs:label "QuatroQueijos"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:AnchoviesTopping,
+        pizza:hasTopping some pizza:CaperTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:MushroomTopping,
+        pizza:hasTopping some pizza:OliveTopping,
+        pizza:hasTopping some pizza:PeperoniSausageTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:AnchoviesTopping or pizza:CaperTopping or pizza:MozzarellaTopping or pizza:MushroomTopping or pizza:OliveTopping or pizza:PeperoniSausageTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:FruitTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeFrutas"@pt
+    
+    SubClassOf: 
+        pizza:PizzaTopping
+    
+    DisjointWith: 
+        pizza:CheeseTopping, pizza:FishTopping, pizza:HerbSpiceTopping, pizza:MeatTopping, pizza:NutTopping, pizza:SauceTopping, pizza:VegetableTopping
+    
+    
+Class: pizza:FruttiDiMare
+
+    Annotations: 
+        rdfs:label "FrutosDoMar"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:GarlicTopping,
+        pizza:hasTopping some pizza:MixedSeafoodTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:GarlicTopping or pizza:MixedSeafoodTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:GarlicTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeAlho"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Medium
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:Giardiniera
+
+    Annotations: 
+        rdfs:label "Giardiniera"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:LeekTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:MushroomTopping,
+        pizza:hasTopping some pizza:OliveTopping,
+        pizza:hasTopping some pizza:PeperonataTopping,
+        pizza:hasTopping some pizza:PetitPoisTopping,
+        pizza:hasTopping some pizza:SlicedTomatoTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:LeekTopping or pizza:MozzarellaTopping or pizza:MushroomTopping or pizza:OliveTopping or pizza:PeperonataTopping or pizza:PetitPoisTopping or pizza:SlicedTomatoTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:GoatsCheeseTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeQueijoDeCabra"@pt
+    
+    SubClassOf: 
+        pizza:CheeseTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:FourCheesesTopping, pizza:GorgonzolaTopping, pizza:MozzarellaTopping, pizza:ParmesanTopping
+    
+    
+Class: pizza:GorgonzolaTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeGorgonzola"@pt
+    
+    SubClassOf: 
+        pizza:CheeseTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:FourCheesesTopping, pizza:GoatsCheeseTopping, pizza:MozzarellaTopping, pizza:ParmesanTopping
+    
+    
+Class: pizza:GreenPepperTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDePimentaoVerde"@pt
+    
+    SubClassOf: 
+        pizza:PepperTopping
+    
+    DisjointWith: 
+        pizza:JalapenoPepperTopping, pizza:PeperonataTopping, pizza:SweetPepperTopping
+    
+    
+Class: pizza:HamTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDePresunto"@pt
+    
+    SubClassOf: 
+        pizza:MeatTopping
+    
+    DisjointWith: 
+        pizza:ChickenTopping, pizza:HotSpicedBeefTopping, pizza:PeperoniSausageTopping
+    
+    
+Class: pizza:HerbSpiceTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeErvas"@pt
+    
+    SubClassOf: 
+        pizza:PizzaTopping
+    
+    DisjointWith: 
+        pizza:CheeseTopping, pizza:FishTopping, pizza:FruitTopping, pizza:MeatTopping, pizza:NutTopping, pizza:SauceTopping, pizza:VegetableTopping
+    
+    
+Class: pizza:Hot
+
+    Annotations: 
+        rdfs:label "Picante"@pt
+    
+    SubClassOf: 
+        pizza:Spiciness
+    
+    DisjointWith: 
+        pizza:Medium, pizza:Mild
+    
+    
+Class: pizza:HotGreenPepperTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDePimentaoVerdePicante"@pt
+    
+    SubClassOf: 
+        pizza:GreenPepperTopping,
+        pizza:hasSpiciness some pizza:Hot
+    
+    
+Class: pizza:HotSpicedBeefTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeBifePicante"@pt
+    
+    SubClassOf: 
+        pizza:MeatTopping,
+        pizza:hasSpiciness some pizza:Hot
+    
+    DisjointWith: 
+        pizza:ChickenTopping, pizza:HamTopping, pizza:PeperoniSausageTopping
+    
+    
+Class: pizza:IceCream
+
+    Annotations: 
+        rdfs:comment "A class to demonstrate mistakes made with setting a property domain. The property hasTopping has a domain of Pizza. This means that the reasoner can infer that all individuals using the hasTopping property must be of type Pizza. Because of the restriction on this class, all members of IceCream must use the hasTopping property, and therefore must also be members of Pizza. However, Pizza and IceCream are disjoint, so this causes an inconsistency. If they were not disjoint, IceCream would be inferred to be a subclass of Pizza."@en,
+        rdfs:label "Sorvete"@pt
+    
+    SubClassOf: 
+        pizza:Food,
+        pizza:hasTopping some pizza:FruitTopping
+    
+    DisjointWith: 
+        pizza:Pizza, pizza:PizzaBase, pizza:PizzaTopping
+    
+    
+Class: pizza:InterestingPizza
+
+    Annotations: 
+        rdfs:comment "Any pizza that has at least 3 toppings. Note that this is a cardinality constraint on the hasTopping property and NOT a qualified cardinality constraint (QCR). A QCR would specify from which class the members in this relationship must be. eg has at least 3 toppings from PizzaTopping. This is currently not supported in OWL."@en,
+        rdfs:label "PizzaInteressante"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (pizza:hasTopping min 3 owl:Thing)
+    
+    
+Class: pizza:JalapenoPepperTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeJalapeno"@pt
+    
+    SubClassOf: 
+        pizza:PepperTopping,
+        pizza:hasSpiciness some pizza:Hot
+    
+    DisjointWith: 
+        pizza:GreenPepperTopping, pizza:PeperonataTopping, pizza:SweetPepperTopping
+    
+    
+Class: pizza:LaReine
+
+    Annotations: 
+        rdfs:label "LaReine"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:HamTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:MushroomTopping,
+        pizza:hasTopping some pizza:OliveTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:HamTopping or pizza:MozzarellaTopping or pizza:MushroomTopping or pizza:OliveTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:LeekTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeLeek"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:Margherita
+
+    Annotations: 
+        rdfs:label "Margherita"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:MozzarellaTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:MeatTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeCarne"@pt
+    
+    SubClassOf: 
+        pizza:PizzaTopping
+    
+    DisjointWith: 
+        pizza:CheeseTopping, pizza:FishTopping, pizza:FruitTopping, pizza:HerbSpiceTopping, pizza:NutTopping, pizza:SauceTopping, pizza:VegetableTopping
+    
+    
+Class: pizza:MeatyPizza
+
+    Annotations: 
+        rdfs:comment "Any pizza that has at least one meat topping"@en,
+        rdfs:label "PizzaDeCarne"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (pizza:hasTopping some pizza:MeatTopping)
+    
+    
+Class: pizza:Medium
+
+    Annotations: 
+        rdfs:label "Media"@pt
+    
+    SubClassOf: 
+        pizza:Spiciness
+    
+    DisjointWith: 
+        pizza:Hot, pizza:Mild
+    
+    
+Class: pizza:Mild
+
+    Annotations: 
+        rdfs:label "NaoPicante"@pt
+    
+    SubClassOf: 
+        pizza:Spiciness
+    
+    DisjointWith: 
+        pizza:Hot, pizza:Medium
+    
+    
+Class: pizza:MixedSeafoodTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeFrutosDoMarMistos"@pt
+    
+    SubClassOf: 
+        pizza:FishTopping
+    
+    DisjointWith: 
+        pizza:AnchoviesTopping, pizza:PrawnsTopping
+    
+    
+Class: pizza:MozzarellaTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeMozzarella"@pt
+    
+    SubClassOf: 
+        pizza:CheeseTopping,
+        pizza:hasSpiciness some pizza:Mild,
+        pizza:hasCountryOfOrigin value pizza:Italy
+    
+    DisjointWith: 
+        pizza:FourCheesesTopping, pizza:GoatsCheeseTopping, pizza:GorgonzolaTopping, pizza:ParmesanTopping
+    
+    
+Class: pizza:Mushroom
+
+    Annotations: 
+        rdfs:label "Cogumelo"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:MushroomTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:MozzarellaTopping or pizza:MushroomTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:MushroomTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeCogumelo"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:NamedPizza
+
+    Annotations: 
+        rdfs:comment "A pizza that can be found on a pizza menu"@en,
+        rdfs:label "PizzaComUmNome"@pt
+    
+    SubClassOf: 
+        pizza:Pizza
+    
+    
+Class: pizza:Napoletana
+
+    Annotations: 
+        rdfs:label "Napoletana"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:AnchoviesTopping,
+        pizza:hasTopping some pizza:CaperTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:OliveTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:AnchoviesTopping or pizza:CaperTopping or pizza:MozzarellaTopping or pizza:OliveTopping or pizza:TomatoTopping),
+        pizza:hasCountryOfOrigin value pizza:Italy
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:NonVegetarianPizza
+
+    Annotations: 
+        rdfs:comment "Any Pizza that is not a VegetarianPizza"@en,
+        rdfs:label "PizzaNaoVegetariana"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (not (pizza:VegetarianPizza))
+    
+    DisjointWith: 
+        pizza:VegetarianPizza
+    
+    
+Class: pizza:NutTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeCastanha"@pt
+    
+    SubClassOf: 
+        pizza:PizzaTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:CheeseTopping, pizza:FishTopping, pizza:FruitTopping, pizza:HerbSpiceTopping, pizza:MeatTopping, pizza:SauceTopping, pizza:VegetableTopping
+    
+    
+Class: pizza:OliveTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeAzeitona"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:OnionTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeCebola"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Medium
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:ParmaHamTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDePrezuntoParma"@pt
+    
+    SubClassOf: 
+        pizza:HamTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    
+Class: pizza:Parmense
+
+    Annotations: 
+        rdfs:label "Parmense"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:AsparagusTopping,
+        pizza:hasTopping some pizza:HamTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:ParmesanTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:AsparagusTopping or pizza:HamTopping or pizza:MozzarellaTopping or pizza:ParmesanTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:ParmesanTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeParmesao"@pt
+    
+    SubClassOf: 
+        pizza:CheeseTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:FourCheesesTopping, pizza:GoatsCheeseTopping, pizza:GorgonzolaTopping, pizza:MozzarellaTopping
+    
+    
+Class: pizza:PeperonataTopping
+
+    Annotations: 
+        rdfs:label "CoberturaPeperonata"@pt
+    
+    SubClassOf: 
+        pizza:PepperTopping,
+        pizza:hasSpiciness some pizza:Medium
+    
+    DisjointWith: 
+        pizza:GreenPepperTopping, pizza:JalapenoPepperTopping, pizza:SweetPepperTopping
+    
+    
+Class: pizza:PeperoniSausageTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeCalabreza"@pt
+    
+    SubClassOf: 
+        pizza:MeatTopping,
+        pizza:hasSpiciness some pizza:Medium
+    
+    DisjointWith: 
+        pizza:ChickenTopping, pizza:HamTopping, pizza:HotSpicedBeefTopping
+    
+    
+Class: pizza:PepperTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDePimentao"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:PetitPoisTopping
+
+    Annotations: 
+        rdfs:label "CoberturaPetitPois"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:RocketTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:PineKernels
+
+    Annotations: 
+        rdfs:label "CoberturaPineKernels"@pt
+    
+    SubClassOf: 
+        pizza:NutTopping
+    
+    
+Class: pizza:Pizza
+
+    Annotations: 
+        rdfs:label "Pizza"@en
+    
+    SubClassOf: 
+        pizza:Food,
+        pizza:hasBase some pizza:PizzaBase
+    
+    DisjointWith: 
+        pizza:IceCream, pizza:PizzaBase, pizza:PizzaTopping
+    
+    
+Class: pizza:PizzaBase
+
+    Annotations: 
+        rdfs:label "BaseDaPizza"@pt
+    
+    SubClassOf: 
+        pizza:Food
+    
+    DisjointWith: 
+        pizza:IceCream, pizza:Pizza, pizza:PizzaTopping
+    
+    
+Class: pizza:PizzaTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDaPizza"@pt
+    
+    SubClassOf: 
+        pizza:Food
+    
+    DisjointWith: 
+        pizza:IceCream, pizza:Pizza, pizza:PizzaBase
+    
+    
+Class: pizza:PolloAdAstra
+
+    Annotations: 
+        rdfs:label "PolloAdAstra"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:CajunSpiceTopping,
+        pizza:hasTopping some pizza:ChickenTopping,
+        pizza:hasTopping some pizza:GarlicTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:RedOnionTopping,
+        pizza:hasTopping some pizza:SweetPepperTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:CajunSpiceTopping or pizza:ChickenTopping or pizza:GarlicTopping or pizza:MozzarellaTopping or pizza:RedOnionTopping or pizza:SweetPepperTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:PrawnsTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeCamarao"@pt
+    
+    SubClassOf: 
+        pizza:FishTopping
+    
+    DisjointWith: 
+        pizza:AnchoviesTopping, pizza:MixedSeafoodTopping
+    
+    
+Class: pizza:PrinceCarlo
+
+    Annotations: 
+        rdfs:label "CoberturaPrinceCarlo"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:LeekTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:ParmesanTopping,
+        pizza:hasTopping some pizza:RosemaryTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:LeekTopping or pizza:MozzarellaTopping or pizza:ParmesanTopping or pizza:RosemaryTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:QuattroFormaggi
+
+    Annotations: 
+        rdfs:label "QuatroQueijos"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:FourCheesesTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:FourCheesesTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:RealItalianPizza
+
+    Annotations: 
+        rdfs:comment "This defined class has conditions that are part of the definition: ie any Pizza that has the country of origin, Italy is a RealItalianPizza. It also has conditions that merely describe the members - that all RealItalianPizzas must only have ThinAndCrispy bases. In essence, all pizzas from Italy must have ThinAndCrispy bases."@en,
+        rdfs:label "PizzaItalianaReal"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (pizza:hasCountryOfOrigin value pizza:Italy)
+    
+    SubClassOf: 
+        pizza:hasBase only pizza:ThinAndCrispyBase
+    
+    
+Class: pizza:RedOnionTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeCebolaVermelha"@pt
+    
+    SubClassOf: 
+        pizza:OnionTopping
+    
+    
+Class: pizza:RocketTopping
+
+    Annotations: 
+        rdfs:label "CoberturaRocket"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Medium
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:SpinachTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:Rosa
+
+    Annotations: 
+        rdfs:label "Rosa"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:GorgonzolaTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:GorgonzolaTopping or pizza:MozzarellaTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:RosemaryTopping
+
+    Annotations: 
+        rdfs:label "CoberturaRosemary"@pt
+    
+    SubClassOf: 
+        pizza:HerbSpiceTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:CajunSpiceTopping
+    
+    
+Class: pizza:SauceTopping
+
+    Annotations: 
+        rdfs:label "CoberturaEmMolho"@pt
+    
+    SubClassOf: 
+        pizza:PizzaTopping
+    
+    DisjointWith: 
+        pizza:CheeseTopping, pizza:FishTopping, pizza:FruitTopping, pizza:HerbSpiceTopping, pizza:MeatTopping, pizza:NutTopping, pizza:VegetableTopping
+    
+    
+Class: pizza:Siciliana
+
+    Annotations: 
+        rdfs:label "Siciliana"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:AnchoviesTopping,
+        pizza:hasTopping some pizza:ArtichokeTopping,
+        pizza:hasTopping some pizza:GarlicTopping,
+        pizza:hasTopping some pizza:HamTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:OliveTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:AnchoviesTopping or pizza:ArtichokeTopping or pizza:GarlicTopping or pizza:HamTopping or pizza:MozzarellaTopping or pizza:OliveTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:SlicedTomatoTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeTomateFatiado"@pt
+    
+    SubClassOf: 
+        pizza:TomatoTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:SundriedTomatoTopping
+    
+    
+Class: pizza:SloppyGiuseppe
+
+    Annotations: 
+        rdfs:label "SloppyGiuseppe"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:GreenPepperTopping,
+        pizza:hasTopping some pizza:HotSpicedBeefTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:OnionTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:GreenPepperTopping or pizza:HotSpicedBeefTopping or pizza:MozzarellaTopping or pizza:OnionTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:Soho, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:Soho
+
+    Annotations: 
+        rdfs:label "Soho"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:GarlicTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:OliveTopping,
+        pizza:hasTopping some pizza:ParmesanTopping,
+        pizza:hasTopping some pizza:RocketTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:GarlicTopping or pizza:MozzarellaTopping or pizza:OliveTopping or pizza:ParmesanTopping or pizza:RocketTopping or pizza:TomatoTopping)
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:UnclosedPizza, pizza:Veneziana
+    
+    
+Class: pizza:Spiciness
+
+    Annotations: 
+        rdfs:comment "A ValuePartition that describes only values from Hot, Medium or Mild. NB Subclasses can themselves be divided up into further partitions."@en,
+        rdfs:label "Tempero"@pt
+    
+    EquivalentTo: 
+        pizza:Hot or pizza:Medium or pizza:Mild
+    
+    SubClassOf: 
+        pizza:ValuePartition
+    
+    
+Class: pizza:SpicyPizza
+
+    Annotations: 
+        rdfs:comment "Any pizza that has a spicy topping is a SpicyPizza"@en,
+        rdfs:label "PizzaTemperada"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (pizza:hasTopping some pizza:SpicyTopping)
+    
+    
+Class: pizza:SpicyPizzaEquivalent
+
+    Annotations: 
+        rdfs:comment "An alternative definition for the SpicyPizza which does away with needing a definition of SpicyTopping and uses a slightly more complicated restriction: Pizzas that have at least one topping that is both a PizzaTopping and has spiciness hot are members of this class."@en,
+        rdfs:label "PizzaTemperadaEquivalente"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (pizza:hasTopping some 
+            (pizza:PizzaTopping
+             and (pizza:hasSpiciness some pizza:Hot)))
+    
+    
+Class: pizza:SpicyTopping
+
+    Annotations: 
+        rdfs:comment "Any pizza topping that has spiciness Hot"@en,
+        rdfs:label "CoberturaTemperada"@pt
+    
+    EquivalentTo: 
+        pizza:PizzaTopping
+         and (pizza:hasSpiciness some pizza:Hot)
+    
+    
+Class: pizza:SpinachTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeEspinafre"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:TomatoTopping
+    
+    
+Class: pizza:SultanaTopping
+
+    Annotations: 
+        rdfs:label "CoberturaSultana"@pt
+    
+    SubClassOf: 
+        pizza:FruitTopping,
+        pizza:hasSpiciness some pizza:Medium
+    
+    
+Class: pizza:SundriedTomatoTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeTomateRessecadoAoSol"@pt
+    
+    SubClassOf: 
+        pizza:TomatoTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:SlicedTomatoTopping
+    
+    
+Class: pizza:SweetPepperTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDePimentaoDoce"@pt
+    
+    SubClassOf: 
+        pizza:PepperTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:GreenPepperTopping, pizza:JalapenoPepperTopping, pizza:PeperonataTopping
+    
+    
+Class: pizza:ThinAndCrispyBase
+
+    Annotations: 
+        rdfs:label "BaseFinaEQuebradica"@pt
+    
+    SubClassOf: 
+        pizza:PizzaBase
+    
+    DisjointWith: 
+        pizza:DeepPanBase
+    
+    
+Class: pizza:ThinAndCrispyPizza
+
+    EquivalentTo: 
+        pizza:Pizza
+         and (pizza:hasBase only pizza:ThinAndCrispyBase)
+    
+    
+Class: pizza:TobascoPepperSauce
+
+    Annotations: 
+        rdfs:label "MolhoTobascoPepper"@pt
+    
+    SubClassOf: 
+        pizza:SauceTopping,
+        pizza:hasSpiciness some pizza:Hot
+    
+    
+Class: pizza:TomatoTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeTomate"@pt
+    
+    SubClassOf: 
+        pizza:VegetableTopping,
+        pizza:hasSpiciness some pizza:Mild
+    
+    DisjointWith: 
+        pizza:ArtichokeTopping, pizza:AsparagusTopping, pizza:CaperTopping, pizza:GarlicTopping, pizza:LeekTopping, pizza:MushroomTopping, pizza:OliveTopping, pizza:OnionTopping, pizza:PepperTopping, pizza:PetitPoisTopping, pizza:RocketTopping, pizza:SpinachTopping
+    
+    
+Class: pizza:UnclosedPizza
+
+    Annotations: 
+        rdfs:comment "An unclosed Pizza cannot be inferred to be either a VegetarianPizza or a NonVegetarianPizza, because it might have other toppings."^^xsd:string,
+        rdfs:label "PizzaAberta"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:MozzarellaTopping
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:Veneziana
+    
+    
+Class: pizza:ValuePartition
+
+    Annotations: 
+        rdfs:comment "A ValuePartition is a pattern that describes a restricted set of classes from which a property can be associated. The parent class is used in restrictions, and the covering axiom means that only members of the subclasses may be used as values. The possible subclasses cannot be extended without updating the ValuePartition class."^^xsd:string,
+        rdfs:label "ValorDaParticao"@pt
+    
+    DisjointWith: 
+        pizza:DomainConcept
+    
+    
+Class: pizza:VegetableTopping
+
+    Annotations: 
+        rdfs:label "CoberturaDeVegetais"@pt
+    
+    SubClassOf: 
+        pizza:PizzaTopping
+    
+    DisjointWith: 
+        pizza:CheeseTopping, pizza:FishTopping, pizza:FruitTopping, pizza:HerbSpiceTopping, pizza:MeatTopping, pizza:NutTopping, pizza:SauceTopping
+    
+    
+Class: pizza:VegetarianPizza
+
+    Annotations: 
+        rdfs:comment "Any pizza that does not have fish topping and does not have meat topping is a VegetarianPizza. Members of this class do not need to have any toppings at all."@en,
+        rdfs:label "PizzaVegetariana"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (not (pizza:hasTopping some pizza:FishTopping))
+         and (not (pizza:hasTopping some pizza:MeatTopping))
+    
+    DisjointWith: 
+        pizza:NonVegetarianPizza
+    
+    
+Class: pizza:VegetarianPizzaEquivalent1
+
+    Annotations: 
+        rdfs:comment "Any pizza that only has vegetarian toppings or no toppings is a VegetarianPizzaEquiv1. Should be inferred to be equivalent to VegetarianPizzaEquiv2.  Not equivalent to VegetarianPizza because PizzaTopping is not covering"@en,
+        rdfs:label "PizzaVegetarianaEquivalente1"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (pizza:hasTopping only pizza:VegetarianTopping)
+    
+    
+Class: pizza:VegetarianPizzaEquivalent2
+
+    Annotations: 
+        rdfs:comment "An alternative to VegetarianPizzaEquiv1 that does not require a definition of VegetarianTopping. Perhaps more difficult to maintain. Not equivalent to VegetarianPizza"@en,
+        rdfs:label "PizzaVegetarianaEquivalente2"@pt
+    
+    EquivalentTo: 
+        pizza:Pizza
+         and (pizza:hasTopping only 
+            (pizza:CheeseTopping or pizza:FruitTopping or pizza:HerbSpiceTopping or pizza:NutTopping or pizza:SauceTopping or pizza:VegetableTopping))
+    
+    
+Class: pizza:VegetarianTopping
+
+    Annotations: 
+        rdfs:comment "An example of a covering axiom. VegetarianTopping is equivalent to the union of all toppings in the given axiom. VegetarianToppings can only be Cheese or Vegetable or....etc."@en,
+        rdfs:label "CoberturaVegetariana"@pt
+    
+    EquivalentTo: 
+        pizza:PizzaTopping
+         and (pizza:CheeseTopping or pizza:FruitTopping or pizza:HerbSpiceTopping or pizza:NutTopping or pizza:SauceTopping or pizza:VegetableTopping)
+    
+    
+Class: pizza:Veneziana
+
+    Annotations: 
+        rdfs:label "Veneziana"@pt
+    
+    SubClassOf: 
+        pizza:NamedPizza,
+        pizza:hasTopping some pizza:CaperTopping,
+        pizza:hasTopping some pizza:MozzarellaTopping,
+        pizza:hasTopping some pizza:OliveTopping,
+        pizza:hasTopping some pizza:OnionTopping,
+        pizza:hasTopping some pizza:PineKernels,
+        pizza:hasTopping some pizza:SultanaTopping,
+        pizza:hasTopping some pizza:TomatoTopping,
+        pizza:hasTopping only 
+            (pizza:CaperTopping or pizza:MozzarellaTopping or pizza:OliveTopping or pizza:OnionTopping or pizza:PineKernels or pizza:SultanaTopping or pizza:TomatoTopping),
+        pizza:hasCountryOfOrigin value pizza:Italy
+    
+    DisjointWith: 
+        pizza:American, pizza:AmericanHot, pizza:Cajun, pizza:Capricciosa, pizza:Caprina, pizza:Fiorentina, pizza:FourSeasons, pizza:FruttiDiMare, pizza:Giardiniera, pizza:LaReine, pizza:Margherita, pizza:Mushroom, pizza:Napoletana, pizza:Parmense, pizza:PolloAdAstra, pizza:PrinceCarlo, pizza:QuattroFormaggi, pizza:Rosa, pizza:Siciliana, pizza:SloppyGiuseppe, pizza:Soho, pizza:UnclosedPizza
+    
+    
+Individual: pizza:America
+
+    Types: 
+        pizza:Country,
+        owl:Thing
+    
+    
+Individual: pizza:England
+
+    Types: 
+        pizza:Country,
+        owl:Thing
+    
+    
+Individual: pizza:France
+
+    Types: 
+        pizza:Country,
+        owl:Thing
+    
+    
+Individual: pizza:Germany
+
+    Types: 
+        pizza:Country,
+        owl:Thing
+    
+    
+Individual: pizza:Italy
+
+    Types: 
+        pizza:Country,
+        owl:Thing
+    
+    
+Individual: pizza:Pizza1
+
+    Types: 
+        pizza:Margherita,
+        pizza:hasTopping some pizza:NutTopping
+    
+    
+Individual: pizza:Pizza2
+
+    Types: 
+        pizza:Rosa,
+        pizza:hasTopping some owl:Thing
+    
+    
+Individual: pizza:Pizza3
+
+    Types: 
+        pizza:FourSeasons,
+        pizza:hasIngredient some owl:Thing
+    
+    Facts:  
+     pizza:hasTopping  pizza:Topping2
+    
+    
+Individual: pizza:Pizza4
+
+    Types: 
+        pizza:Pizza
+    
+    Facts:  
+     pizza:hasIngredient  pizza:Topping1
+    
+    
+Individual: pizza:Topping1
+
+    Types: 
+        pizza:CheeseTopping
+    
+    
+Individual: pizza:Topping2
+
+    Types: 
+        pizza:PineKernels
+    
+    
+DifferentIndividuals: 
+    pizza:America,pizza:England,pizza:France,pizza:Germany,pizza:Italy
+
