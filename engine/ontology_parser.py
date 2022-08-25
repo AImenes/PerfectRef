@@ -23,7 +23,7 @@ def import_ontology(path):
 
     return onto 
     
-def get_axioms(ontology):
+def get_axioms(ontology, only_PIs):
     classes = list(ontology.classes())
     properties = list(ontology.properties())
     list_of_axioms = list()
@@ -38,7 +38,7 @@ def get_axioms(ontology):
                 
                 list_of_axioms.append(LogicalAxiom(cl, sup))
 
-
+    #Properties
     for prop in properties:
         super_property = prop.is_a
 
@@ -56,9 +56,15 @@ def get_axioms(ontology):
         if not prop.range is None:
             
             for ran in prop.range:
-                list_of_axioms.append(LogicalAxiom(ran, prop))
-    
-    print("halt")
+                list_of_axioms.append(LogicalAxiom(Inverse(prop), ran))
+
+    #Select PIs from the CIs
+    if only_PIs:
+        for ax in list_of_axioms:
+            if (isinstance(ax.get_left(), Not) and not isinstance(ax.get_right(), Not)) or (not isinstance(ax.get_left(), Not) and isinstance(ax.get_right(), Not)):
+                list_of_axioms.remove(ax)
+                
+
     return list_of_axioms
 
 

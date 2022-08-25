@@ -1,36 +1,27 @@
-import sympy
+from .utils.tau import tau
+from .utils.reduce import reduce
+from .utils.unify import unify
+from .utils.atoms_obtained import atoms_obtained
 
-#Inputs: Conjunctive query cg_q, TBox T
-def perfectRef(cg_q, T):
+def perfectref(q, T):
+	PR = [q]
+	PR_prime = list()
 
-	#Adding to list-variable
-	PR = [cg_q]
-
-	#Working variable
-	PR_prime = PR
-
-	#Start loop
 	while (PR_prime != PR):
+		
+		PR_prime = PR
 
-		#For every query object in the list PR_prime
 		for q in PR_prime:
 
-			#For each atom in the query
-			for g in q:
+			for g in q.get_body():
 
-				#For each positive inclusion PI, I, in the TBox. That is, rules domains and ranges.
-				for I in T:
+				for PI in T:
 
-					#If positive inclusion, I, is applicable to the Tbox T
-					If something:
+					if PI.is_applicable(g):
 
-						#then we include it in the new union of conjunctive queries
-						PR += something_that_depends_on_format
+						PR.append(atom_obtained(g, PI))
 
-					
+			#if g1 and g2 unify
 
-
-
-	#Outputs union of Conjunctive Queries PR
+				#PR.append(tau(reduced(q, g1, g2)))
 	return PR
-

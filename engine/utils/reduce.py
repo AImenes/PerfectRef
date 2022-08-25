@@ -1,4 +1,5 @@
 #ReduceMethod
-
+def reduce():
+    pass
 
 

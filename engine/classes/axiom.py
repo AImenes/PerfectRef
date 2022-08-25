@@ -11,5 +11,11 @@ class LogicalAxiom(Axiom):
         self.left = left
         self.right = right
         
+    def get_left(self):
+        return self.left
+
+    def get_right(self):
+        return self.right
+    
     def is_applicable(self, atom):
         pass

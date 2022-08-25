@@ -1,1 +1,3 @@
 #tauMethod
+def tau():
+    pass
