@@ -7,6 +7,9 @@ class Query:
 	def __repr__(self):
 		return repr(vars(self))
 
+	def __eq__(self, other_instance):
+		return self.original_entry_name == other_instance.original_entry_name
+
 	def get_head(self):
 		return self.head
 
@@ -22,9 +25,19 @@ class Query:
 class QueryBody:
 		def __init__(self, body):
 			self.body = body
+			self.processed = False
 
 		def __repr__(self):
 			return repr(vars(self))
 
+		def __eq__(self, other_body):
+			return self.body == other_body
+
 		def get_body(self):
 			return self.body
+
+		def set_process_status(self, processed):
+			self.processed = processed
+
+		def is_processed(self):
+			return self.processed

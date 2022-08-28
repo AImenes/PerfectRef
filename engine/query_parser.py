@@ -1,4 +1,4 @@
-from .classes.query import Query
+from .classes.query import Query, QueryBody
 from .classes.atom import AtomParser, AtomConcept, AtomRole, AtomConstant
 from .classes.entry import Variable, Constant
 
@@ -65,7 +65,7 @@ def parse_query(query_string):
 
 
 	#Return a Query-object
-	return Query(head, new_body, dictionary_of_variables)
+	return Query(head, QueryBody(new_body), dictionary_of_variables)
 
 def parse_head(head_string,dictionary_of_variables):
 	is_distinguished = True 
@@ -148,3 +148,8 @@ def update_entries(atom, dict_of_variables):
 	for entry in atom.get_entries():
 		e = dict_of_variables[entry.get_org_name()]
 		entry.update_values(e['is_distinguished'], e['in_body'], e['is_shared'], e['is_bound'])
+
+def update_processed_status(current_q, PR, stat):
+	for qu in PR:
+		if current_q == qu:
+			qu.set_process_status(stat)

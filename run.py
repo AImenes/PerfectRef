@@ -11,11 +11,12 @@ import owlready2
 
 def main():
 	#Load Ontology
-	path = "engine/ontologies/Test4.owl"
+	path = "engine/ontologies/Test2.owl"
 	onto = import_ontology(path)
 	t_box = get_axioms(onto, True)
-#	query_string = "q(?x) :- Professor(?x)^teachesTo(?x, ?y)"
-	query_string = "q(?x) :- Person(?x)^teachesTo(?x, ?y)"
+	query_string = "q(?x) :- Professor(?x)^teachesTo(?x, ?y)"
+#	query_string = "q(?x) :- Person(?x)^teachesTo(?x, ?y)"
+#	query_string = "q(?x) :- Student(?x)"
 	q = parse_query(query_string)
 	q_body = q.get_body()
 	print(q)

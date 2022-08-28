@@ -6,6 +6,9 @@ class Entry:
 	def __repr__(self):
 		return repr(vars(self))
 
+	def __eq__(self, other_instance):
+		return self.original_entry_name == other_instance.original_entry_name
+
 	def get_org_name(self):
 		return self.original_entry_name
 

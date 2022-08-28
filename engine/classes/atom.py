@@ -22,6 +22,9 @@ class AtomParser:
 	def __repr__(self):
 		return repr(vars(self))
 
+	def __eq__(self, other_instance):
+		return self.name == other_instance.name
+
 	def get_name(self):
 		return self.name
 
@@ -44,6 +47,9 @@ class Atom:
 	def __repr__(self):
 		return repr(vars(self))
 
+	def __eq__(self, other_instance):
+		return self.name == other_instance.name
+
 	def get_name(self):
 		return self.name
 
@@ -63,6 +69,9 @@ class AtomConcept(Atom):
 
 	def get_var1(self):
 		return self.var1
+
+	def modify(self, test):
+		self.var1 = test
 
 class AtomRole(Atom):
 	def __init__(self, name, var1, var2):
