@@ -1,5 +1,6 @@
-from turtle import left
+from owlready2 import *
 
+from engine.classes.atom import AtomConstant, AtomConcept, AtomRole
 
 class Axiom:
     def __init__(self):
@@ -18,4 +19,28 @@ class LogicalAxiom(Axiom):
         return self.right
     
     def is_applicable(self, atom):
-        pass
+
+        #CONCEPTS - SUBCLASSES
+        # A PI, I, is applicable to an atom A(x) if I has A in its right-hand side.
+        if isinstance(atom, AtomConcept):        
+            if (atom.get_name() == self.right.name) and isinstance(self.right, ThingClass):
+                return True
+                
+        #ROLES - DOMAINS, RANGES and SUB PROPERTIES
+        # A PI I is applicable to an atom P(x1, x2) if  x2 = _ and the right-hand side of I is ∃P
+        if isinstance(atom, AtomRole):
+            if (atom.get_name() == self.right.name):        
+                if (atom.get_var2().get_unbound()) and isinstance(self.right, ObjectPropertyClass):
+                    return True
+
+            # A PI I is applicable to an atom P(x1, x2) if x1 =_ and the right-hand side of I is ∃P−
+            if isinstance(self.right, Inverse):
+                if self.right.property.name == atom.get_name():
+                    if (atom.get_var1().get_unbound()):
+                        return True
+
+        # I is a role inclusion assertion and its right-hand side is either P or P−   
+            if (atom.get_name() == self.right.name) and ((isinstance(self.right, ObjectPropertyClass)) or isinstance(self.right, Inverse)) and isinstance(self.left, ObjectPropertyClass):
+                return True
+
+        return False

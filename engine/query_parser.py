@@ -1,8 +1,7 @@
 from .classes.query import Query
-from .classes.atom import Atom
-from .classes.entry import Entry
-from .classes.entry import Variable
-from .classes.entry import Constant
+from .classes.atom import AtomParser, AtomConcept, AtomRole, AtomConstant
+from .classes.entry import Variable, Constant
+
 
 """
 	METHODS FOR PARSING
@@ -40,16 +39,33 @@ def parse_query(query_string):
 	head_string = head_string.strip()
 	body_string = body_string.strip()
 
-	# Recurse
+	# Initial recursion for atom detection and variable detection
 	head = parse_head(head_string, dictionary_of_variables)
 	body = parse_body(body_string, dictionary_of_variables)
 
-	#Update the Boolean variables after the recursion
+	#Update the boundness Boolean variables after the recursion
 	update_entries(head, dictionary_of_variables)
 	[update_entries(b, dictionary_of_variables) for b in body]
 
+	#Update classtypes
+	print("stop")
+	new_body = list()
+	for atom in body:
+		if atom.get_type() == "CONSTANT":
+			new_body.append(AtomConstant(atom.get_name(),atom.get_value()))
+			
+		elif atom.get_type() == "CONCEPT":
+			new_body.append(AtomConcept(atom.get_name(),atom.get_var1()))
+			
+		elif atom.get_type() == "ROLE":
+			new_body.append(AtomRole(atom.get_name(),atom.get_var1(), atom.get_var2()))
+			
+		else:
+			print("SYNTHAX ERROR")
+
+
 	#Return a Query-object
-	return Query(head, body, dictionary_of_variables)
+	return Query(head, new_body, dictionary_of_variables)
 
 def parse_head(head_string,dictionary_of_variables):
 	is_distinguished = True 
@@ -64,7 +80,7 @@ def parse_atom(atom_string, is_distinguished, dictionary_of_variables):
 	#print(atom_string)
 	name, arity, entry_str_list = extract_entry_tokens(atom_string)
 	#print(name, arity, entry_str_list)
-	return Atom(name, [parse_entry(token, is_distinguished, dictionary_of_variables) for token in entry_str_list])
+	return AtomParser(name, [parse_entry(token, is_distinguished, dictionary_of_variables) for token in entry_str_list])
 
 def parse_entry(entry_string, is_distinguished, dictionary_of_variables):
 	if entry_string.startswith("?"):

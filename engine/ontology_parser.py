@@ -1,7 +1,4 @@
 from owlready2 import *
-from .classes.axiom import Axiom
-from .classes.axiom import LogicalAxiom
-
 
 def import_ontology(path):
     onto = get_ontology(path).load()
@@ -23,49 +20,6 @@ def import_ontology(path):
 
     return onto 
     
-def get_axioms(ontology, only_PIs):
-    classes = list(ontology.classes())
-    properties = list(ontology.properties())
-    list_of_axioms = list()
-
-    # Add sub- and superclasses
-    for cl in classes:
-        superclasses = cl.is_a
-        
-        for sup in superclasses:
-
-            if not sup.name == "Thing":
-                
-                list_of_axioms.append(LogicalAxiom(cl, sup))
-
-    #Properties
-    for prop in properties:
-        super_property = prop.is_a
-
-        for sup in super_property:
-
-            if not sup.name == "ObjectProperty":
-                
-                list_of_axioms.append(LogicalAxiom(prop, sup))
-
-        if not prop.domain is None:
-            
-            for dom in prop.domain:
-                list_of_axioms.append(LogicalAxiom(dom, prop))
-
-        if not prop.range is None:
-            
-            for ran in prop.range:
-                list_of_axioms.append(LogicalAxiom(Inverse(prop), ran))
-
-    #Select PIs from the CIs
-    if only_PIs:
-        for ax in list_of_axioms:
-            if (isinstance(ax.get_left(), Not) and not isinstance(ax.get_right(), Not)) or (not isinstance(ax.get_left(), Not) and isinstance(ax.get_right(), Not)):
-                list_of_axioms.remove(ax)
-                
-
-    return list_of_axioms
 
 
     

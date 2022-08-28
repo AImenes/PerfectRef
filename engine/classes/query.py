@@ -15,3 +15,16 @@ class Query:
 
 	def get_dict_of_variables(self):
 		return self.dict_of_variables
+
+	def modify_body(self, body):
+		self.body = body
+
+class QueryBody:
+		def __init__(self, body):
+			self.body = body
+
+		def __repr__(self):
+			return repr(vars(self))
+
+		def get_body(self):
+			return self.body

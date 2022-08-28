@@ -1,10 +1,11 @@
 from .utils.tau import tau
 from .utils.reduce import reduce
 from .utils.unify import unify
-from .utils.atoms_obtained import atoms_obtained
+from .atoms_obtained import atoms_obtained
+from .atoms_obtained import new_query
 
-def perfectref(q, T):
-	PR = [q]
+def perfectref(q_instance, T):
+	PR = [q_instance]
 	PR_prime = list()
 
 	while (PR_prime != PR):
@@ -13,13 +14,13 @@ def perfectref(q, T):
 
 		for q in PR_prime:
 
-			for g in q.get_body():
+			for g in q:
 
 				for PI in T:
 
 					if PI.is_applicable(g):
 
-						PR.append(atom_obtained(g, PI))
+						PR.append(new_query(q, g, PI))
 
 			#if g1 and g2 unify
 
