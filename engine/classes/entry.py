@@ -20,7 +20,7 @@ class Variable(Entry):
 		self.distinguished = dict_for_states['is_distinguished']
 		self.body = dict_for_states['in_body']
 		self.shared = dict_for_states['is_shared']
-		self.bound = dict_for_states['is_bound']
+		self.bound = self.shared or self.distinguished
 		self.unbound = not self.bound
 
 		if self.unbound:
@@ -46,11 +46,11 @@ class Variable(Entry):
 	def get_unbound(self):
 		return self.unbound
 
-	def update_values(self, distinguished, body, shared, bound):
+	def update_values(self, distinguished, shared, body):
 		self.distinguished = distinguished
 		self.body = body
 		self.shared = shared
-		self.bound = bound
+		self.bound = self.shared or self.distinguished
 		self.unbound = not self.bound
 
 

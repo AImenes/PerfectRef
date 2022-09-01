@@ -66,6 +66,11 @@ class AtomConcept(Atom):
 	def __init__(self, name, var1):
 		super().__init__(name)
 		self.var1 = var1
+	
+	def __eq__(self, other_instance):
+		super().__eq__(other_instance)
+		return self.var1 == other_instance.var1
+
 
 	def get_var1(self):
 		return self.var1
@@ -78,6 +83,10 @@ class AtomRole(Atom):
 		super().__init__(name)
 		self.var1 = var1
 		self.var2 = var2
+
+	def __eq__(self, other_instance):
+		super().__eq__(other_instance)
+		return self.var1 == other_instance.var1 and self.var2 == other_instance.var2
 
 	def get_var1(self):
 		return self.var1

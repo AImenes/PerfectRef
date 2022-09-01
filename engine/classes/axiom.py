@@ -18,7 +18,12 @@ class LogicalAxiom(Axiom):
     def get_right(self):
         return self.right
     
-    def is_applicable(self, atom):
+    def is_applicable(self, atom, queries):
+
+        #Check if the query it proposes does not already exist
+
+        #Verify that we dont create rules that are completely equal on both sides.
+        #if atom.get_name() == self.right.name and 
 
         #if atom != 
         #CONCEPTS - SUBCLASSES

@@ -1,6 +1,5 @@
-from .utils.tau import tau
 from .utils.reduce import reduce
-from .utils.unify import unify, unifiable
+from .utils.unify import unifiable
 from .atoms_obtained import new_query
 from .query_parser import update_processed_status
 import itertools
@@ -27,7 +26,8 @@ def perfectref(q_instance, T):
 
 					for PI in T:
 
-						if PI.is_applicable(g):
+						#Needs to implement: is not a query already and not equal on both sides
+						if PI.is_applicable(g, PR):
 
 							PR.append(new_query(q, g, PI))
 
@@ -40,9 +40,9 @@ def perfectref(q_instance, T):
 
 						if unifiable(pair):
 
-							PR.append(tau(reduce(query_body, pair)))
+							PR.append(reduce(query_body, pair))
 
-				
+
 				update_processed_status(q, PR, True)
 				
 

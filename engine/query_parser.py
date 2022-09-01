@@ -147,7 +147,7 @@ def update_entries(atom, dict_of_variables):
 	
 	for entry in atom.get_entries():
 		e = dict_of_variables[entry.get_org_name()]
-		entry.update_values(e['is_distinguished'], e['in_body'], e['is_shared'], e['is_bound'])
+		entry.update_values(e['is_distinguished'], e['in_body'], e['is_shared'])
 
 def update_processed_status(current_q, PR, stat):
 	for qu in PR:
