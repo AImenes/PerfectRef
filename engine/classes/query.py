@@ -24,6 +24,7 @@ class Query:
 	def modify_body(self, body):
 		self.body = body
 
+
 class QueryBody:
 		def __init__(self, body):
 			self.body = body

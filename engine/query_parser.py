@@ -183,6 +183,4 @@ def update_role(var1, var2, dictionary_of_variables):
 	name2 = var2.get_org_name()
 	parse_dict_of_variables(name1, var1.get_distinguished(), dictionary_of_variables)
 	parse_dict_of_variables(name2, var2.get_distinguished(), dictionary_of_variables)
-	
-
-	
+		

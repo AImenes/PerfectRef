@@ -5,7 +5,7 @@ from .classes.atom import AtomConcept, AtomRole
 from .classes.entry import Variable
 from copy import deepcopy
 
-
+# Importing the PIs from the T-box
 def get_axioms(ontology, only_PIs):
     classes = list(ontology.classes())
     properties = list(ontology.properties())
@@ -45,8 +45,7 @@ def get_axioms(ontology, only_PIs):
     if only_PIs:
         for ax in list_of_axioms:
             if (isinstance(ax.get_left(), Not) and not isinstance(ax.get_right(), Not)) or (not isinstance(ax.get_left(), Not) and isinstance(ax.get_right(), Not)):
-                list_of_axioms.remove(ax)
-                
+                list_of_axioms.remove(ax)         
 
     return list_of_axioms
 
@@ -119,11 +118,9 @@ def atoms_obtained(q, g, I):
             if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, Inverse) and (g.get_name() == I_right.property.name)) or (isinstance(I_left, Inverse) and isinstance(I_right, ObjectPropertyClass) and g.get_name() == I_right.name):
                 return AtomRole(I_left.name, g.get_var2(), g.get_var1())
 
-
     else:
-        pass
+        return None
 
-    return
 
 def new_query(q, g, I):
     new_q = deepcopy(q)
@@ -139,5 +136,4 @@ def new_query(q, g, I):
         else:
             new_body.append(at)
     
-
     return QueryBody(new_body)

@@ -1,5 +1,4 @@
 from owlready2 import *
-
 from engine.classes.atom import AtomConstant, AtomConcept, AtomRole
 
 class Axiom:

@@ -1,7 +1,9 @@
 from engine.classes.atom import AtomConcept, AtomConstant
 
 
+#Export the entailed queries to file.
 def export_query_to_file(PR, query, q_head):
+    
     f = open("outputs/demofile2.txt", "w")
     f.write("Original query: \n%s \n\n" % (query))
     f.write("Entailed query:\n")

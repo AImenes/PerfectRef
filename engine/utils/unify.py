@@ -1,10 +1,6 @@
 
 from engine.classes.atom import AtomConcept, AtomRole
 
-
-def unify(g1, g2):
-    pass
-
 def unifiable(pair):
     g1, g2 = pair
 
