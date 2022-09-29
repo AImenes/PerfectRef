@@ -18,18 +18,27 @@ def perfectref(q_instance, T):
 			print("yey")
 
 		for q in PR_prime:
+
 			if not q.is_processed():
+
 				query_body = q.get_body()
 
-				# a
-				for g in query_body:
+				#This is needed if the query originally contains duplicates, s.t, we dont receive a nested error	
+				if not q.contains_duplicates():
 
-					for PI in T:
+					# a
+					for g in query_body:
 
-						#Needs to implement: is not a query already and not equal on both sides
-						if PI.is_applicable(g, PR):
+						for PI in T:
 
-							PR.append(new_query(q, g, PI))
+							#Needs to implement: is not a query already and not equal on both sides
+							if PI.is_applicable(g, PR):
+
+								new_q = new_query(q, g, PI)
+
+								#If it is not already entailed
+								if not new_q in PR:
+									PR.append(new_q)
 
 				# b
 				#if g1 and g2 unify
@@ -40,8 +49,10 @@ def perfectref(q_instance, T):
 
 						if unifiable(pair):
 
-							PR.append(reduce(query_body, pair))
-
+							#If it is not already entailed
+							new_q = reduce(query_body, pair)
+							if not new_q in PR:
+								PR.append(new_q)
 
 				update_processed_status(q, PR, True)
 				

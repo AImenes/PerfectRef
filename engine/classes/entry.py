@@ -46,12 +46,17 @@ class Variable(Entry):
 	def get_unbound(self):
 		return self.unbound
 
-	def update_values(self, distinguished, shared, body):
+	def update_values(self, distinguished, body, shared):
 		self.distinguished = distinguished
 		self.body = body
 		self.shared = shared
 		self.bound = self.shared or self.distinguished
 		self.unbound = not self.bound
+
+		if self.unbound:
+			self.represented_name = "?_"
+		else:
+			self.represented_name = self.original_entry_name
 
 
 #Subclass Constant

@@ -56,7 +56,7 @@ def atoms_obtained(q, g, I):
     I_left = I.get_left()
     I_right = I.get_right()
     dummy_dict_unbound = {'is_distinguished': False, 'in_body': False, 'is_shared': False, 'is_bound': False}
-    dummy_unbound_variable = Variable("dummy", dummy_dict_unbound)
+    dummy_unbound_variable = Variable("?_", dummy_dict_unbound)
 
     # – If g=A(x) 
     if isinstance(g, AtomConcept):

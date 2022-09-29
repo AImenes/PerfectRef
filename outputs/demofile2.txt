@@ -1,0 +1,11 @@
+Original query: 
+q(?x) :- Professor(?x)^teachesTo(?x, ?y) 
+
+Entailed query:
+q(?x) :- Professor(?x)^teachesTo(?x,?y)
+q(?x) :- hasTutor(?_,?x)^teachesTo(?x,?y)
+q(?x) :- Professor(?x)^Professor(?x)
+q(?x) :- hasTutor(?_,?x)^Professor(?x)
+q(?x) :- Professor(?x)
+q(?x) :- hasTutor(?_,?x)^hasTutor(?_,?x)
+q(?x) :- hasTutor(?_,?x)

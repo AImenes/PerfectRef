@@ -68,8 +68,7 @@ class AtomConcept(Atom):
 		self.var1 = var1
 	
 	def __eq__(self, other_instance):
-		super().__eq__(other_instance)
-		return self.var1 == other_instance.var1
+		return super().__eq__(other_instance) and self.var1 == other_instance.var1
 
 
 	def get_var1(self):
@@ -78,6 +77,9 @@ class AtomConcept(Atom):
 	def modify(self, test):
 		self.var1 = test
 
+	def get_entries(self):
+		return [self.var1]
+
 class AtomRole(Atom):
 	def __init__(self, name, var1, var2):
 		super().__init__(name)
@@ -85,11 +87,15 @@ class AtomRole(Atom):
 		self.var2 = var2
 
 	def __eq__(self, other_instance):
-		super().__eq__(other_instance)
-		return self.var1 == other_instance.var1 and self.var2 == other_instance.var2
+		if isinstance(other_instance, AtomRole):
+			return super().__eq__(other_instance) and self.var1 == other_instance.var1 and self.var2 == other_instance.var2
+		return False
 
 	def get_var1(self):
 		return self.var1
 
 	def get_var2(self):
 		return self.var2
+
+	def get_entries(self):
+		return [self.var1, self.var2]

@@ -1,3 +1,5 @@
+import itertools
+
 class Query:
 	def __init__(self, head, body, dict_of_variables):
 		self.head = head
@@ -41,3 +43,13 @@ class QueryBody:
 
 		def is_processed(self):
 			return self.processed
+
+		def contains_duplicates(self):
+			for pair in itertools.combinations(self.body, 2):
+				g1, g2 = pair
+				if g1 == g2:
+					return True
+			return False
+
+		
+				

@@ -44,8 +44,8 @@ def parse_query(query_string):
 	body = parse_body(body_string, dictionary_of_variables)
 
 	#Update the boundness Boolean variables after the recursion
-	update_entries(head, dictionary_of_variables)
-	[update_entries(b, dictionary_of_variables) for b in body]
+	initial_update_entries(head, dictionary_of_variables)
+	[initial_update_entries(b, dictionary_of_variables) for b in body]
 
 	#Update classtypes
 	print("stop")
@@ -134,7 +134,7 @@ def parse_dict_of_variables(entry_string, is_distinguished, dictionary_of_variab
 	#If the variable is new
 	else:
 		if is_distinguished:
-			dictionary_of_variables[entry_string] = {'is_bound':False, 'is_distinguished':True, 'in_body': False, 'is_shared':False }
+			dictionary_of_variables[entry_string] = {'is_bound':False, 'is_distinguished':True, 'in_body': True, 'is_shared':False }
 		else:
 			dictionary_of_variables[entry_string] = {'is_bound':False, 'is_distinguished':False, 'in_body': True, 'is_shared':False }
 		
@@ -143,7 +143,7 @@ def parse_dict_of_variables(entry_string, is_distinguished, dictionary_of_variab
 
 	return dictionary_of_variables[entry_string]
 
-def update_entries(atom, dict_of_variables):
+def initial_update_entries(atom, dict_of_variables):
 	
 	for entry in atom.get_entries():
 		e = dict_of_variables[entry.get_org_name()]
@@ -153,3 +153,36 @@ def update_processed_status(current_q, PR, stat):
 	for qu in PR:
 		if current_q == qu:
 			qu.set_process_status(stat)
+
+
+##UPDATE
+def update_body(body):
+	dictionary_of_variables = {}
+	for g in body.get_body():
+		update_atom(g, dictionary_of_variables)
+
+	[initial_update_entries(b, dictionary_of_variables) for b in body.get_body()]
+
+
+	return body
+
+
+def update_atom(atom, dictionary_of_variables):
+	if isinstance(atom, AtomConcept):
+		update_concept(atom.get_var1(), dictionary_of_variables)
+	else:
+		update_role(atom.get_var1(), atom.get_var2(), dictionary_of_variables)
+	
+def update_concept(var, dictionary_of_variables):
+	name = var.get_org_name()
+	parse_dict_of_variables(name, var.get_distinguished(), dictionary_of_variables)
+
+	
+def update_role(var1, var2, dictionary_of_variables):
+	name1 = var1.get_org_name()
+	name2 = var2.get_org_name()
+	parse_dict_of_variables(name1, var1.get_distinguished(), dictionary_of_variables)
+	parse_dict_of_variables(name2, var2.get_distinguished(), dictionary_of_variables)
+	
+
+	
