@@ -1,6 +1,6 @@
 #Imports
-from .utils.reduce import reduce
-from .utils.unify import unifiable
+from .reduce import reduce
+from .unify import unifiable
 from .atoms_obtained import new_query
 from .query_parser import update_processed_status
 import itertools

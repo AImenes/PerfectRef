@@ -1,7 +1,7 @@
-from engine.classes.atom import AtomConcept, AtomConstant, AtomRole
-from engine.classes.entry import Constant, Variable
-from engine.classes.query import QueryBody
-from engine.query_parser import update_body
+from .classes.atom import AtomConcept, AtomConstant, AtomRole
+from .classes.entry import Constant, Variable
+from .classes.query import QueryBody
+from .query_parser import update_body
 
 #ReduceMethod
 # Should return the most general unifier between g1 and g2

@@ -1,3 +1,0 @@
-#tauMethod
-def tau():
-    pass

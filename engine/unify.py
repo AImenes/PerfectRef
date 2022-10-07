@@ -1,5 +1,4 @@
-
-from engine.classes.atom import AtomConcept, AtomRole
+from .classes.atom import AtomConcept, AtomRole
 
 def unifiable(pair):
     g1, g2 = pair
