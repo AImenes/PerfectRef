@@ -31,4 +31,3 @@ def main():
 	query_string = "q(?x) :- teachesTo(?x,?y)^hasTutor(?y,?_)"
 
 	PR = get_entailed_queries(path, query_string)
-

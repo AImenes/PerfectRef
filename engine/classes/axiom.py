@@ -34,6 +34,8 @@ class LogicalAxiom(Axiom):
         #ROLES - DOMAINS, RANGES and SUB PROPERTIES
         # A PI I is applicable to an atom P(x1, x2) if  x2 = _ and the right-hand side of I is ∃P
         if isinstance(atom, AtomRole):
+            if type(self.right) == Or:
+                print(self.right.Classes[0])
             if (atom.get_name() == self.right.name):        
                 if (atom.get_var2().get_unbound()) and isinstance(self.right, ObjectPropertyClass) and isinstance(self.left, ThingClass):
                     return True
