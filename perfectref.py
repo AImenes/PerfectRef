@@ -5,7 +5,7 @@ from .engine.query_parser import parse_query
 from .engine.ontology_parser import import_ontology
 from .engine.atoms_obtained import get_axioms
 from .engine.perfectref_algorithm import perfectref
-from .engine.extractor import export_query_to_file
+from .engine.extractor import export_query_to_file, print_query
 
 
 def get_entailed_queries(ontology, string):
@@ -18,6 +18,7 @@ def get_entailed_queries(ontology, string):
 	
 	#Exporting the results
 	export_query_to_file(PR, string, q_head)
+	print_query(PR, string, q_head)
 	return PR
 
 def main():

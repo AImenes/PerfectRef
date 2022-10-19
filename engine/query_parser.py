@@ -48,7 +48,6 @@ def parse_query(query_string):
 	[initial_update_entries(b, dictionary_of_variables) for b in body]
 
 	#Update classtypes
-	print("stop")
 	new_body = list()
 	for atom in body:
 		if atom.get_type() == "CONSTANT":
