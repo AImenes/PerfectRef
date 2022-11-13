@@ -43,11 +43,12 @@ def print_query(PR, query, q_head):
                 if isinstance(g, AtomConstant):
                     pass
                 elif isinstance(g, AtomConcept):
-                    print(g.get_name() + "(" + g.get_var1().get_represented_name() + ")")
+                    print(g.get_name() + "(" + g.get_var1().get_represented_name() + ")",end="")
                 else:
-                    print(g.get_name() + "(" + g.get_var1().get_represented_name() + "," + g.get_var2().get_org_name() + ")")
+                    print(g.get_name() + "(" + g.get_var1().get_represented_name() + "," + g.get_var2().get_org_name() + ")",end="")
 
                 if (counter < length_of_q - 1):
-                    print("^")
+                    print("^",end="")
 
                 counter += 1
+            print("\n")
