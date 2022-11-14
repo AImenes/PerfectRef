@@ -13,12 +13,16 @@ def get_axioms(ontology, only_PIs):
 
     #Remove restrictions
     for cl in classes:
-        if type(cl) == Restriction or type(cl) == DataPropertyClass:
+        #print(type(cl))
+        if not (type(cl) == ThingClass or type(cl) == ObjectPropertyClass):
             classes.remove(cl)
 
 
     for pt in properties:
-        if type(pt) == Restriction or type(pt) == DataPropertyClass:
+        #print(type(pt))
+        if type(pt) == DataPropertyClass:
+            print("fuck")
+        if not (type(pt) == ThingClass or type(pt) == ObjectPropertyClass):
             properties.remove(pt)
 
     # Add sub- and superclasses
@@ -26,54 +30,55 @@ def get_axioms(ontology, only_PIs):
         superclasses = cl.is_a
         
         for sup in superclasses:
+            if (type(sup) == ObjectPropertyClass or type(sup) == ThingClass or type(sup) == Inverse or type(sup) == InverseFunctionalProperty) and not sup.name == "Thing":
+                print(type(sup))
 
             #if not a restriction
-            if not (type(sup) == Restriction):
+            #if not (type(sup) == Restriction):
 
                 #if not superclass is top domain
-                if (not sup.name == "Thing"):
+                #if (not sup.name == "Thing"):
                     
-                    if not type(sup) == Or:
-                        list_of_axioms.append(LogicalAxiom((cl), (sup)))
-                    else:
-                        for cc in sup.Classes:
-                            list_of_axioms.append(LogicalAxiom((cl), (cc)))
+                    #if not type(sup) == Or:
+                list_of_axioms.append(LogicalAxiom((cl), (sup)))
+                    #else:
+                    #    for cc in sup.Classes:
+                    #        list_of_axioms.append(LogicalAxiom((cl), (cc)))
 
 
     #Properties
     for prop in properties:
 
-        if not type(prop) == DataPropertyClass:
-            super_property = prop.is_a
+        super_property = prop.is_a
 
-            for sup in super_property:
-
-                if not (type(sup) == Restriction):
-                    if not sup.name == "ObjectProperty" or sup.name == "InverseFunctionalProperty":
-                        if not type(sup) == Or:
-                            list_of_axioms.append(LogicalAxiom(prop, sup))
-                        else:
-                            for cc in sup.Properties:
-                                list_of_axioms.append(LogicalAxiom(prop, cc))
+        for sup in super_property:
+            if (type(sup) == ObjectPropertyClass or type(sup) == ThingClass or type(sup) == Inverse or type(sup) == InverseFunctionalProperty) and not sup.name == "Thing":
+           # if type(sup) == InverseFunctionalProperty:
+            #    print("ggß")
 
 
-            if not prop.domain is None:
+            #if not (type(sup) == Restriction or type(sup) == And):
+            #    if not sup.name == "ObjectProperty" or sup.name == "InverseFunctionalProperty":
+            #        if not type(sup) == Or:
+                list_of_axioms.append(LogicalAxiom(prop, sup))
+            #        else:
+            #            for cc in sup.Properties:
+            #                list_of_axioms.append(LogicalAxiom(prop, cc))
 
-                for dom in prop.domain:
-                    if type(dom) == Or:
-                        for cc in dom.Classes:
-                            list_of_axioms.append(LogicalAxiom(cc, prop))
-                    else:
-                        list_of_axioms.append(LogicalAxiom(dom, prop))
+
+        if not prop.domain is None:
+
+            for dom in prop.domain:
+
+                if (type(dom) == ObjectPropertyClass or type(dom) == ThingClass or type(dom) == Inverse or type(dom) == InverseFunctionalProperty) and not dom.name == "Thing":
+
+                    list_of_axioms.append(LogicalAxiom(dom, prop))
 
 
-            if not prop.range is None:
-                for ran in prop.range:
-                    if type(ran) == Or:
-                        for cc in ran.Classes:
-                            list_of_axioms.append(LogicalAxiom(Inverse(prop), cc))
-                    else:
-                            list_of_axioms.append(LogicalAxiom(Inverse(prop), ran))
+        if not prop.range is None:
+            for ran in prop.range:
+                if (type(ran) == ObjectPropertyClass or type(ran) == ThingClass or type(ran) == Inverse or type(ran) == InverseFunctionalProperty) and not ran.name == "Thing":
+                        list_of_axioms.append(LogicalAxiom(Inverse(prop), ran))
 
 
     #Select PIs from the CIs
