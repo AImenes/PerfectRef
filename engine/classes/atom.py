@@ -99,3 +99,7 @@ class AtomRole(Atom):
 
 	def get_entries(self):
 		return [self.var1, self.var2]
+
+class AtomInverse(Atom):
+    def __init__(self, name, atom):
+        super().__init__(name)

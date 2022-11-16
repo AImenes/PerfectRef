@@ -44,6 +44,9 @@ def perfectref(q_instance, T):
 							#Validate if the PI is applicable with the atom g
 							if PI.is_applicable(g, PR):
 
+								if len(PR) == 37:
+									print("hei")
+
 								#Construct the new query
 								new_q = new_query(q, g, PI)
 
