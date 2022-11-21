@@ -76,16 +76,9 @@ def get_axioms(ontology, only_PIs):
         if not prop.range is None:
             for ran in prop.range:
                 if (type(ran) == ObjectPropertyClass or type(ran) == ThingClass or type(ran) == Inverse or type(ran) == InverseFunctionalProperty) and not ran.name == "Thing":
-                        
-                        #If an inverse of the property actually exists
-                        if type(Inverse(prop)) == Inverse:
-                            new_axiom = LogicalAxiom(AtomInverse(prop), ran)
-                            if not new_axiom in list_of_axioms:
-                                list_of_axioms.append(new_axiom)
-                        else:
-                            new_axiom = LogicalAxiom(Inverse(prop), ran)
-                            if not new_axiom in list_of_axioms:
-                                list_of_axioms.append(new_axiom)
+                    new_axiom = LogicalAxiom(Inverse(prop), ran)
+                    if not new_axiom in list_of_axioms:
+                        list_of_axioms.append(new_axiom)
 
 
     #Select PIs from the CIs
@@ -119,8 +112,8 @@ def atoms_obtained(q, g, I):
                 return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable, False)
 
             # – If g=A(x)   and I = ∃P−⊑ A,     then gr(g,I) = P(_,x);
-            if (isinstance(I_left, AtomInverse)):
-                return AtomRole(I_left.get_atom().name, dummy_unbound_variable, g.get_var1(), True)
+            if (isinstance(I_left, Inverse)):
+                return AtomRole(I_left.property.name, dummy_unbound_variable, g.get_var1(), True)
 
 
     
@@ -138,10 +131,10 @@ def atoms_obtained(q, g, I):
                 return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable, False)
 
             # – If g=P(x,_) and I = ∃P1− ⊑ ∃P,  then gr(g,I) = P1(_,x);
-            if (isinstance(I_left, AtomInverse)):
-                return AtomRole(I_left.get_atom().name, dummy_unbound_variable, g.get_var1(), True)
+            if (isinstance(I_left, Inverse)):
+                return AtomRole(I_left.property.name, dummy_unbound_variable, g.get_var1(), True)
 
-        elif ((isinstance(I_right, AtomInverse) and g.get_var1().get_unbound() and g.get_name() == I_right.get_atom().name)):
+        elif ((isinstance(I_right, Inverse) and g.get_var1().get_unbound() and g.get_name() == I_right.property.name)):
             
             # – If g=P(_,x) and I = A ⊑ ∃P−,    then gr(g,I) = A(x);
             if (isinstance(I_left, ThingClass)):
@@ -152,10 +145,10 @@ def atoms_obtained(q, g, I):
                 return AtomRole(I_left.name, g.get_var2(), dummy_unbound_variable, False)
 
             # – If g=P(_,x) and I = ∃P1− ⊑ ∃P−,  then gr(g,I) = P1(_,x);
-            if (isinstance(I_left, AtomInverse)):
-                return AtomRole(I_left.get_atom().name, dummy_unbound_variable, g.get_var2(), True)
+            if (isinstance(I_left, Inverse)):
+                return AtomRole(I_left.property.name, dummy_unbound_variable, g.get_var2(), True)
 
-        # - Added special case since ∃P1 ⊑ ∃P applies to g=P(_,x) since ∃P1- ⊑ ∃P- is implied by ∃P1 ⊑ ∃P
+        # - Added special case: since ∃P1 ⊑ ∃P applies to g=P(_,x), ∃P1- ⊑ ∃P- is implied by ∃P1 ⊑ ∃P
         elif ((isinstance(I_right, ObjectPropertyClass) and g.get_var1().get_unbound() and g.get_name() == I_right.name)):
 
             # – If g=P(_,x) and I = ∃P1 ⊑ ∃P,   then gr(g,I) = P1(_,x);
@@ -169,16 +162,16 @@ def atoms_obtained(q, g, I):
             if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, ObjectPropertyClass) and (g.get_name() == I_right.name)):
                 return AtomRole(I_left.name, g.get_var1(), g.get_var2(), False)
 
-            if (isinstance(I_left, AtomInverse) and isinstance(I_right, AtomInverse) and g.get_name() == I_right.get_atom().name):
-                return AtomRole(I_left.get_atom().name, g.get_var1(), g.get_var2(), False)
+            if (isinstance(I_left, Inverse) and isinstance(I_right, Inverse) and g.get_name() == I_right.property.name):
+                return AtomRole(I_left.property.name, g.get_var1(), g.get_var2(), False)
 
 
         # – If g=P(x1,x2) and either I = P1 ⊑ P− or P1− ⊑ P,     then gr(g,I) = P1(x2, x1).
-            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, AtomInverse) and (g.get_name() == I_right.get_atom().name)):
+            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, Inverse) and (g.get_name() == I_right.property.name)):
                 return AtomRole(I_left.name, g.get_var2(), g.get_var1(), True)
 
-            if (isinstance(I_left, AtomInverse) and isinstance(I_right, ObjectPropertyClass) and g.get_name() == I_right.name):
-                return AtomRole(I_left.get_atom().name, g.get_var2(), g.get_var1(), True)
+            if (isinstance(I_left, Inverse) and isinstance(I_right, ObjectPropertyClass) and g.get_name() == I_right.name):
+                return AtomRole(I_left.property.name, g.get_var2(), g.get_var1(), True)
 
         else:
             print("something went wrong")

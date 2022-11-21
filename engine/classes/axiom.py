@@ -41,8 +41,8 @@ class LogicalAxiom(Axiom):
                     return True
 
             # A PI I is applicable to an atom P(x1, x2) if x1 =_ and the right-hand side of I is ∃P−
-            if isinstance(self.right, AtomInverse):
-                if self.right.get_atom().name == atom.get_name():
+            if isinstance(self.right, Inverse):
+                if self.right.property.name == atom.get_name():
                     if (atom.get_var1().get_unbound() and isinstance(self.left, ThingClass)):
                         return True
 
