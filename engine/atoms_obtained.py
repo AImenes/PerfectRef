@@ -1,7 +1,7 @@
 from owlready2 import *
 from .classes.query import QueryBody
 from .classes.axiom import LogicalAxiom
-from .classes.atom import AtomConcept, AtomRole
+from .classes.atom import AtomConcept, AtomRole, AtomInverse
 from .classes.entry import Variable
 from copy import deepcopy
 
@@ -57,6 +57,7 @@ def get_axioms(ontology, only_PIs):
             #        if not type(sup) == Or:
                 #print(sup.inverse_property)
                 list_of_axioms.append(LogicalAxiom(prop, sup))
+            #    list_of_axioms.append(LogicalAxiom(AtomInverse(prop), AtomInverse(sup)))
             #        else:
             #            for cc in sup.Properties:
             #                list_of_axioms.append(LogicalAxiom(prop, cc))
@@ -67,15 +68,24 @@ def get_axioms(ontology, only_PIs):
             for dom in prop.domain:
 
                 if (type(dom) == ObjectPropertyClass or type(dom) == ThingClass or type(dom) == Inverse or type(dom) == InverseFunctionalProperty) and not dom.name == "Thing":
-
-                    list_of_axioms.append(LogicalAxiom(dom, prop))
+                    new_axiom = LogicalAxiom(prop, dom)
+                    if not new_axiom in list_of_axioms:
+                        list_of_axioms.append(new_axiom)
 
 
         if not prop.range is None:
             for ran in prop.range:
                 if (type(ran) == ObjectPropertyClass or type(ran) == ThingClass or type(ran) == Inverse or type(ran) == InverseFunctionalProperty) and not ran.name == "Thing":
-                        #print(type(Inverse(prop)))
-                        list_of_axioms.append(LogicalAxiom(Inverse(prop), ran))
+                        
+                        #If an inverse of the property actually exists
+                        if type(Inverse(prop)) == Inverse:
+                            new_axiom = LogicalAxiom(AtomInverse(prop), ran)
+                            if not new_axiom in list_of_axioms:
+                                list_of_axioms.append(new_axiom)
+                        else:
+                            new_axiom = LogicalAxiom(Inverse(prop), ran)
+                            if not new_axiom in list_of_axioms:
+                                list_of_axioms.append(new_axiom)
 
 
     #Select PIs from the CIs
@@ -97,7 +107,6 @@ def atoms_obtained(q, g, I):
     # – If g=A(x) 
     if isinstance(g, AtomConcept):
 
-
         #... and I = [something] ⊑ A
         if (g.get_name() == I_right.name) and (isinstance(I_right, ThingClass)):
            
@@ -107,16 +116,17 @@ def atoms_obtained(q, g, I):
 
             # – If g=A(x)   and I = ∃P ⊑ A,     then gr(g,I) = P(x,_);
             if (isinstance(I_left, ObjectPropertyClass)):
-                return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable)
+                return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable, False)
 
             # – If g=A(x)   and I = ∃P−⊑ A,     then gr(g,I) = P(_,x);
-            if (isinstance(I_left, Inverse)):
-                return AtomRole(I_left.property.name, dummy_unbound_variable, g.get_var1())
+            if (isinstance(I_left, AtomInverse)):
+                return AtomRole(I_left.get_atom().name, dummy_unbound_variable, g.get_var1(), True)
 
 
     
     elif isinstance(g, AtomRole):
 
+#        if (g.get_name() == I_right.name) and g.get_var2().get_unbound() and (isinstance(I_right, ObjectPropertyClass)):
         if (g.get_name() == I_right.name) and g.get_var2().get_unbound() and (isinstance(I_right, ObjectPropertyClass)):
 
             # – If g=P(x,_) and I = A ⊑ ∃P,     then gr(g,I) = A(x);
@@ -125,13 +135,13 @@ def atoms_obtained(q, g, I):
 
             # – If g=P(x,_) and I = ∃P1 ⊑ ∃P,   then gr(g,I) = P1(x,_);
             if (isinstance(I_left, ObjectPropertyClass)):
-                return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable)
+                return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable, False)
 
             # – If g=P(x,_) and I = ∃P1− ⊑ ∃P,  then gr(g,I) = P1(_,x);
-            if (isinstance(I_left, Inverse)):
-                return AtomRole(I_left.name, dummy_unbound_variable, g.get_var1())
+            if (isinstance(I_left, AtomInverse)):
+                return AtomRole(I_left.get_atom().name, dummy_unbound_variable, g.get_var1(), True)
 
-        elif ((isinstance(I_right, Inverse) and g.get_var1().get_unbound() and g.get_name() == I_right.property.name)):
+        elif ((isinstance(I_right, AtomInverse) and g.get_var1().get_unbound() and g.get_name() == I_right.get_atom().name)):
             
             # – If g=P(_,x) and I = A ⊑ ∃P−,    then gr(g,I) = A(x);
             if (isinstance(I_left, ThingClass)):
@@ -139,24 +149,40 @@ def atoms_obtained(q, g, I):
 
             # – If g=P(_,x) and I = ∃P1 ⊑ ∃P−,  then gr(g,I) = P1(x,_);
             if (isinstance(I_left, ObjectPropertyClass)):
-                return AtomRole(I_left.name, g.get_var2(), dummy_unbound_variable)
+                return AtomRole(I_left.name, g.get_var2(), dummy_unbound_variable, False)
 
             # – If g=P(_,x) and I = ∃P1− ⊑ ∃P−,  then gr(g,I) = P1(_,x);
-            if (isinstance(I_left, Inverse)):
-                return AtomRole(I_left.name, dummy_unbound_variable, g.get_var2())
+            if (isinstance(I_left, AtomInverse)):
+                return AtomRole(I_left.get_atom().name, dummy_unbound_variable, g.get_var2(), True)
+
+        # - Added special case since ∃P1 ⊑ ∃P applies to g=P(_,x) since ∃P1- ⊑ ∃P- is implied by ∃P1 ⊑ ∃P
+        elif ((isinstance(I_right, ObjectPropertyClass) and g.get_var1().get_unbound() and g.get_name() == I_right.name)):
+
+            # – If g=P(_,x) and I = ∃P1 ⊑ ∃P,   then gr(g,I) = P1(_,x);
+            if (isinstance(I_left, ObjectPropertyClass)):
+                return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable, True)
 
          # – If g=P(x1,x2)
         elif (g.get_var1().get_bound() and g.get_var2().get_bound() and not (isinstance(I_left, ThingClass))): 
        
         # – If g=P(x1,x2) and either I = P1 ⊑ P or I = P1− ⊑ P−, then gr(g,I) = P1(x1, x2);
-            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, ObjectPropertyClass) and (g.get_name() == I_right.name)) or (isinstance(I_left, Inverse) and isinstance(I_right, Inverse) and g.get_name() == I_right.property.name):
-                return AtomRole(I_left.name, g.get_var1(), g.get_var2())
-                
+            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, ObjectPropertyClass) and (g.get_name() == I_right.name)):
+                return AtomRole(I_left.name, g.get_var1(), g.get_var2(), False)
+
+            if (isinstance(I_left, AtomInverse) and isinstance(I_right, AtomInverse) and g.get_name() == I_right.get_atom().name):
+                return AtomRole(I_left.get_atom().name, g.get_var1(), g.get_var2(), False)
+
 
         # – If g=P(x1,x2) and either I = P1 ⊑ P− or P1− ⊑ P,     then gr(g,I) = P1(x2, x1).
-            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, Inverse) and (g.get_name() == I_right.property.name)) or (isinstance(I_left, Inverse) and isinstance(I_right, ObjectPropertyClass) and g.get_name() == I_right.name):
-                return AtomRole(I_left.name, g.get_var2(), g.get_var1())
+            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, AtomInverse) and (g.get_name() == I_right.get_atom().name)):
+                return AtomRole(I_left.name, g.get_var2(), g.get_var1(), True)
 
+            if (isinstance(I_left, AtomInverse) and isinstance(I_right, ObjectPropertyClass) and g.get_name() == I_right.name):
+                return AtomRole(I_left.get_atom().name, g.get_var2(), g.get_var1(), True)
+
+        else:
+            print("something went wrong")
+            return None
     else:
         return None
 
@@ -166,7 +192,10 @@ def new_query(q, g, I):
     new_g = deepcopy(g)
 
     entailed_atom = atoms_obtained(new_q, new_g, I)
-    
+
+    if entailed_atom is None:
+        return None
+
     new_body = list()
 
     for at in new_q.get_body():

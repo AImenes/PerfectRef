@@ -6,7 +6,6 @@ from .query_parser import update_processed_status
 import itertools
 import copy
 
-
 # # # PERFECTREF # # # 
 def perfectref(q_instance, T):
 
@@ -38,20 +37,17 @@ def perfectref(q_instance, T):
 					# for every atom the query´s body
 					for g in query_body:
 
-						#For every positive inclusion in the the T-Box
+						#For every positive inclusion in the T-Box
 						for PI in T:
 							
 							#Validate if the PI is applicable with the atom g
 							if PI.is_applicable(g, PR):
 
-								if len(PR) == 37:
-									print("hei")
-
 								#Construct the new query
 								new_q = new_query(q, g, PI)
 
-								#If the query is not already entailed from previous processes
-								if not new_q in PR:
+								#If the query is not already entailed from previous processes nor it is None
+								if not (new_q in PR and new_q is None):
 
 									# Add new query to PR
 									PR.append(new_q)

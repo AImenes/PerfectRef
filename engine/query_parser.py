@@ -57,7 +57,7 @@ def parse_query(query_string):
 			new_body.append(AtomConcept(atom.get_name(),atom.get_var1()))
 			
 		elif atom.get_type() == "ROLE":
-			new_body.append(AtomRole(atom.get_name(),atom.get_var1(), atom.get_var2()))
+			new_body.append(AtomRole(atom.get_name(),atom.get_var1(), atom.get_var2(), False))
 			
 		else:
 			print("SYNTHAX ERROR")

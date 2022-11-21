@@ -81,10 +81,11 @@ class AtomConcept(Atom):
 		return [self.var1]
 
 class AtomRole(Atom):
-	def __init__(self, name, var1, var2):
+	def __init__(self, name, var1, var2, inversed):
 		super().__init__(name)
 		self.var1 = var1
 		self.var2 = var2
+		self.inversed = inversed
 
 	def __eq__(self, other_instance):
 		if isinstance(other_instance, AtomRole):
@@ -97,9 +98,18 @@ class AtomRole(Atom):
 	def get_var2(self):
 		return self.var2
 
+	def get_inversed(self):
+		return self.inversed
+
 	def get_entries(self):
 		return [self.var1, self.var2]
 
-class AtomInverse(Atom):
-    def __init__(self, name, atom):
-        super().__init__(name)
+class AtomInverse(AtomRole):
+	def __init__(self, atom):
+		self.atom = atom
+	
+	def get_atom(self):
+		return self.atom
+
+
+
