@@ -148,14 +148,8 @@ def atoms_obtained(q, g, I):
             if (isinstance(I_left, Inverse)):
                 return AtomRole(I_left.property.name, dummy_unbound_variable, g.get_var2(), True)
 
-        # - Added special case: since ∃P1 ⊑ ∃P applies to g=P(_,x), ∃P1- ⊑ ∃P- is implied by ∃P1 ⊑ ∃P
-        elif ((isinstance(I_right, ObjectPropertyClass) and g.get_var1().get_unbound() and g.get_name() == I_right.name)):
 
-            # – If g=P(_,x) and I = ∃P1 ⊑ ∃P,   then gr(g,I) = P1(_,x);
-            if (isinstance(I_left, ObjectPropertyClass)):
-                return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable, True)
-
-         # – If g=P(x1,x2)
+         # – If g=P(x1,x2) - ROLE INCLUSION
         elif (g.get_var1().get_bound() and g.get_var2().get_bound() and not (isinstance(I_left, ThingClass))): 
        
         # – If g=P(x1,x2) and either I = P1 ⊑ P or I = P1− ⊑ P−, then gr(g,I) = P1(x1, x2);
