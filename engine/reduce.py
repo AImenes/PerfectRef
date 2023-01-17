@@ -23,15 +23,15 @@ def unify_atoms(g1,g2):
 
     #if both are Concepts
     if isinstance(g1, AtomConcept) and isinstance(g2, AtomConcept):
-        return AtomConcept(g1.get_name(), unify_entries(g1.get_var1(), g2.get_var1()))
+        return AtomConcept(g1.get_name(), unify_entries(g1.get_var1(), g2.get_var1()), g1.get_iri())
 
     #if both are Roles
     elif isinstance(g1, AtomRole) and isinstance(g2, AtomRole):
-        return AtomRole(g1.get_name(), unify_entries(g1.get_var1(), g2.get_var1()), unify_entries(g1.get_var2(), g2.get_var2()))
+        return AtomRole(g1.get_name(), unify_entries(g1.get_var1(), g2.get_var1()), unify_entries(g1.get_var2(), g2.get_var2()), g1.get_inversed(), g1.get_iri())
 
     # if both are constants
     elif isinstance(g1, AtomConstant) and isinstance(g2, AtomConstant):
-        return AtomConstant(g1.get_name(), g1.get_value())
+        return AtomConstant(g1.get_name(), g1.get_value(), g1.get_iri())
 
     else:
         print("Error unifying atoms")

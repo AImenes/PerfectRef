@@ -7,7 +7,7 @@ class Entry:
 		return repr(vars(self))
 
 	def __eq__(self, other_instance):
-		return self.original_entry_name == other_instance.original_entry_name
+		return self.represented_name == other_instance.represented_name
 
 	def get_org_name(self):
 		return self.original_entry_name

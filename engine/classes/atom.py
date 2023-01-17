@@ -23,7 +23,7 @@ class AtomParser:
 		return repr(vars(self))
 
 	def __eq__(self, other_instance):
-		return self.name == other_instance.name
+		return self.iri == other_instance.iri
 
 	def get_name(self):
 		return self.name
@@ -41,30 +41,44 @@ class AtomParser:
 		return self.var2
 
 class Atom:
-	def __init__(self, name):
+	def __init__(self, name, iri):
 		self.name = name
+		self.iri = iri
+		self.namespace = None
 
 	def __repr__(self):
 		return repr(vars(self))
 
 	def __eq__(self, other_instance):
-		return self.name == other_instance.name
+		return self.iri == other_instance.iri
 
 	def get_name(self):
 		return self.name
 
+	def set_iri(self, iri):
+		self.iri = iri
+
+	def set_namespace(self, namespace):
+		self.namespace = namespace
+
+	def get_iri(self):
+		return self.iri
+
+	def get_namespace(self):
+		return self.namespace
+
 
 class AtomConstant(Atom):
-	def __init__(self, name, value):
-		super().__init__(name)
+	def __init__(self, name, value, iri = None):
+		super().__init__(name, iri)
 		self.value = value
 
 	def get_value(self):
 		return self.value
 
 class AtomConcept(Atom):
-	def __init__(self, name, var1):
-		super().__init__(name)
+	def __init__(self, name, var1, iri = None):
+		super().__init__(name, iri)
 		self.var1 = var1
 	
 	def __eq__(self, other_instance):
@@ -81,8 +95,8 @@ class AtomConcept(Atom):
 		return [self.var1]
 
 class AtomRole(Atom):
-	def __init__(self, name, var1, var2, inversed):
-		super().__init__(name)
+	def __init__(self, name, var1, var2, inversed, iri = None):
+		super().__init__(name, iri)
 		self.var1 = var1
 		self.var2 = var2
 		self.inversed = inversed

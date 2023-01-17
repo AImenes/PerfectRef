@@ -47,7 +47,7 @@ def perfectref(q_instance, T):
 								new_q = new_query(q, g, PI)
 
 								#If the query is not already entailed from previous processes nor it is None
-								if not (new_q in PR and new_q is None):
+								if not (new_q in PR or new_q is None):
 
 									# Add new query to PR
 									PR.append(new_q)

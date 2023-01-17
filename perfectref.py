@@ -3,6 +3,7 @@
 # This code is written by Anders Imenes
 from .engine.query_parser import parse_query
 from .engine.ontology_parser import import_ontology
+from .engine.iri_namespace import get_iri_and_namespace
 from .engine.atoms_obtained import get_axioms
 from .engine.perfectref_algorithm import perfectref
 from .engine.extractor import export_query_to_file, print_query
@@ -10,11 +11,15 @@ from .engine.classes.atom import AtomConcept, AtomConstant, AtomRole
 
 
 def get_entailed_queries(ontology, string):
-
-	t_box = get_axioms((import_ontology(ontology)), True)
+	onto = import_ontology(ontology)
+	t_box = get_axioms(onto, True)
 	q = parse_query(string)
 	q_head = q.get_head()
 	q_body = q.get_body()
+
+	# get IRI and namespace
+	get_iri_and_namespace(q,onto)
+
 	PR = perfectref(q_body, t_box)
 	
 	#Exporting the results

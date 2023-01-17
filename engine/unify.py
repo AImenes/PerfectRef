@@ -8,7 +8,7 @@ def unifiable(pair):
         return False
 
     #If they are class, but are different concepts or roles
-    if g1.get_name() != g2.get_name():
+    if g1.get_iri() != g2.get_iri():
         return False
 
     #If they are concept (doesnt need to check g2 as then first if-statement would have triggered)
