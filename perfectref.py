@@ -10,21 +10,25 @@ from .engine.extractor import export_query_to_file, print_query
 from .engine.classes.atom import AtomConcept, AtomConstant, AtomRole
 
 
-def get_entailed_queries(ontology, string):
+def get_entailed_queries(ontology, string, parse = True):
 	onto = import_ontology(ontology)
 	t_box = get_axioms(onto, True)
-	q = parse_query(string)
-	q_head = q.get_head()
-	q_body = q.get_body()
-
-	# get IRI and namespace
-	get_iri_and_namespace(q,onto)
+	
+	if parse:
+		q = parse_query(string)
+		q_head = q.get_head()
+		q_body = q.get_body()
+		# get IRI and namespace
+		get_iri_and_namespace(q,onto)
+	else:
+		q_head = string.get_head()
+		q_body = string.get_body()
 
 	PR = perfectref(q_body, t_box)
 	
 	#Exporting the results
 	#export_query_to_file(PR, string, q_head)
-	print_query(PR, string, q_head)
+	#print_query(PR, string, q_head)
 	return PR
 
 def parse_output(unparsed_query, PR):

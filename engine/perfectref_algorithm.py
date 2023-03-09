@@ -23,6 +23,7 @@ def perfectref(q_instance, T):
 
 		#For every query in the list 
 		for q in PR_prime:
+			#print(len(PR))
 
 			#Check if the query is already processed by the algorithm
 			if not q.is_processed():

@@ -2,6 +2,7 @@ from .classes.atom import AtomConcept, AtomConstant, AtomRole
 from .classes.entry import Constant, Variable
 from .classes.query import QueryBody
 from .query_parser import update_body
+import copy
 
 #ReduceMethod
 # Should return the most general unifier between g1 and g2
@@ -40,15 +41,16 @@ def unify_atoms(g1,g2):
 
 # Reducing the pair of two atoms
 def reduce(q, pair):
-
+    new_pair = copy.deepcopy(pair)
+    new_q = copy.deepcopy(q)
     # Split atoms
-    g1, g2 = pair
+    g1, g2 = new_pair
 
     # Start recursion for getting the most general unifier
     new_atom = unify_atoms(g1, g2)
     
     new_body = list()
-    for g in q:
+    for g in new_q:
         if not (g == g1 or g == g2):
             new_body.append(g)
     
@@ -57,7 +59,5 @@ def reduce(q, pair):
     ##need to update entries variables
     new_body = update_body(QueryBody(new_body))
     
-    ##
-
     return new_body
 

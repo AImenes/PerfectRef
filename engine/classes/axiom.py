@@ -49,7 +49,15 @@ class LogicalAxiom(Axiom):
 
         # I is a role inclusion assertion and its right-hand side is either P or P−   
             if (atom.get_var1().get_bound() and atom.get_var2().get_bound()):
-                if (atom.get_iri() == self.right.iri) and ((isinstance(self.right, ObjectPropertyClass)) or isinstance(self.right, Inverse)) and (isinstance(self.left, ObjectPropertyClass) or isinstance(self.left, Inverse)):
-                    return True
+                if (isinstance(self.left, ObjectPropertyClass) or isinstance(self.left, Inverse)):
+                
+                    if isinstance(self.right, Inverse):
+                        if atom.get_iri() == self.right.property.iri:
+                            return True
+                    
+                    if isinstance(self.right, ObjectPropertyClass):
+                        if atom.get_iri() == self.right.iri:
+                            return True
+
 
         return False

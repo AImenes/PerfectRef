@@ -1,10 +1,11 @@
 import itertools
 
 class Query:
-	def __init__(self, head, body, dict_of_variables):
+	def __init__(self, head, body, dict_of_variables, query_structure = None):
 		self.head = head
 		self.body = body
 		self.dict_of_variables = dict_of_variables
+		self.query_structure = query_structure
 	
 	def __repr__(self):
 		return repr(vars(self))

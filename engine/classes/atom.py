@@ -54,15 +54,18 @@ class Atom:
 
 	def get_name(self):
 		return self.name
+	
+	def set_name(self, name):
+		self.name = name
 
 	def set_iri(self, iri):
 		self.iri = iri
+	
+	def get_iri(self):
+		return self.iri
 
 	def set_namespace(self, namespace):
 		self.namespace = namespace
-
-	def get_iri(self):
-		return self.iri
 
 	def get_namespace(self):
 		return self.namespace
