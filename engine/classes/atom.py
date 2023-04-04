@@ -41,9 +41,10 @@ class AtomParser:
 		return self.var2
 
 class Atom:
-	def __init__(self, name, iri):
+	def __init__(self, name, iri, answer = None):
 		self.name = name
 		self.iri = iri
+		self.answer = answer
 		self.namespace = None
 
 	def __repr__(self):
@@ -57,12 +58,18 @@ class Atom:
 	
 	def set_name(self, name):
 		self.name = name
-
-	def set_iri(self, iri):
-		self.iri = iri
 	
 	def get_iri(self):
 		return self.iri
+	
+	def set_iri(self, iri):
+		self.iri = iri
+
+	def get_answer(self):
+		return self.answer
+	
+	def set_answer(self, answer):
+		self.answer = answer
 
 	def set_namespace(self, namespace):
 		self.namespace = namespace

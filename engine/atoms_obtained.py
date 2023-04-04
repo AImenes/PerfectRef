@@ -164,10 +164,18 @@ def new_query(q, g, I):
 
     new_body = list()
 
-    for at in new_q.get_body():
-        if (at.get_iri() == g.get_iri()):
-            new_body.append(entailed_atom)
-        else:
-            new_body.append(at)
+    for atom in new_q.get_body():
+        #For roles
+        if isinstance(atom, AtomRole):
+            if atom.get_iri() == g.get_iri() and atom.var1 == g.var1 and atom.var2 == g.var2:
+                new_body.append(entailed_atom)
+            else:
+                new_body.append(atom)
+        #For concepts
+        elif isinstance(atom, AtomConcept):
+            if atom.get_iri() == g.get_iri() and atom.var1 == g.var1:
+                new_body.append(entailed_atom)
+            else:
+                new_body.append(atom)
 
     return QueryBody(new_body)

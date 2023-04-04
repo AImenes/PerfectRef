@@ -27,8 +27,9 @@ class Query:
 
 
 class QueryBody:
-		def __init__(self, body):
+		def __init__(self, body, answer = None):
 			self.body = body
+			self.answer = answer
 			self.processed = False
 
 		def __repr__(self):
@@ -39,6 +40,12 @@ class QueryBody:
 
 		def get_body(self):
 			return self.body
+
+		def get_answer(self):
+			return self.answer
+			
+		def set_answer(self, answer):
+			self.answer = answer
 
 		def set_process_status(self, processed):
 			self.processed = processed
