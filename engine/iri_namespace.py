@@ -7,7 +7,7 @@ def get_iri_and_namespace(q, tbox):
     properties = list(tbox.properties())
 
     #for every atom in q
-    for g in q.get_body().get_body():
+    for g in q.body.body:
         
         
         #Classes
@@ -18,7 +18,7 @@ def get_iri_and_namespace(q, tbox):
         for cl in classes:
 
             #if atom name equals class name
-            if g.get_name() == cl.name:
+            if g.name == cl.name:
 
                 #save class
                 matches.append(cl)
@@ -56,7 +56,7 @@ def get_iri_and_namespace(q, tbox):
         for pp in properties:
 
             #if atom name equals class name
-            if g.get_name() == pp.name:
+            if g.name == pp.name:
 
                 #save class
                 matches.append(pp)

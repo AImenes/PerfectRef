@@ -27,10 +27,11 @@ class Query:
 
 
 class QueryBody:
-		def __init__(self, body, answer = None):
+		def __init__(self, body, answer = None, variable_hierarchy = None):
 			self.body = body
 			self.answer = answer
 			self.processed = False
+			self.variable_hierarchy = variable_hierarchy
 
 		def __repr__(self):
 			return repr(vars(self))

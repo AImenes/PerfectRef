@@ -62,7 +62,7 @@ def get_axioms(ontology, only_PIs):
     #Select PIs from the CIs
     if only_PIs:
         for ax in list_of_axioms:
-            if (isinstance(ax.get_left(), Not) and not isinstance(ax.get_right(), Not)) or (not isinstance(ax.get_left(), Not) and isinstance(ax.get_right(), Not)):
+            if (isinstance(ax.left, Not) and not isinstance(ax.right, Not)) or (not isinstance(ax.left, Not) and isinstance(ax.right, Not)):
                 list_of_axioms.remove(ax)         
 
     return list_of_axioms
@@ -71,8 +71,8 @@ def get_axioms(ontology, only_PIs):
 
 def atoms_obtained(q, g, I):
 
-    I_left = I.get_left()
-    I_right = I.get_right()
+    I_left = I.left
+    I_right = I.right
     dummy_dict_unbound = {'is_distinguished': False, 'in_body': False, 'is_shared': False, 'is_bound': False}
     dummy_unbound_variable = Variable("?_", dummy_dict_unbound)
 
@@ -80,71 +80,71 @@ def atoms_obtained(q, g, I):
     if isinstance(g, AtomConcept):
 
         #... and I = [something] ⊑ A
-        if (g.get_iri() == I_right.iri) and (isinstance(I_right, ThingClass)):
+        if (g.iri == I_right.iri) and (isinstance(I_right, ThingClass)):
            
             # – If g=A(x)   and I = A1 ⊑ A,     then gr(g,I) = A1(x)
             if (isinstance(I_left, ThingClass)):             
-                return AtomConcept(I_left.name, g.get_var1(), I_left.iri)
+                return AtomConcept(I_left.name, g.var1, I_left.iri)
 
             # – If g=A(x)   and I = ∃P ⊑ A,     then gr(g,I) = P(x,_);
             if (isinstance(I_left, ObjectPropertyClass)):
-                return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable, False, I_left.iri)
+                return AtomRole(I_left.name, g.var1, dummy_unbound_variable, False, I_left.iri)
 
             # – If g=A(x)   and I = ∃P−⊑ A,     then gr(g,I) = P(_,x);
             if (isinstance(I_left, Inverse)):
-                return AtomRole(I_left.property.name, dummy_unbound_variable, g.get_var1(), True, I_left.property.iri)
+                return AtomRole(I_left.property.name, dummy_unbound_variable, g.var1, True, I_left.property.iri)
 
 
     
     elif isinstance(g, AtomRole):
 
-        if ((not isinstance(I_right, Inverse)) and g.get_iri() == I_right.iri) and g.get_var2().get_unbound() and (isinstance(I_right, ObjectPropertyClass)):
+        if ((not isinstance(I_right, Inverse)) and g.iri == I_right.iri) and g.var2.unbound and (isinstance(I_right, ObjectPropertyClass)):
 
 
             # – If g=P(x,_) and I = A ⊑ ∃P,     then gr(g,I) = A(x);
             if (isinstance(I_left, ThingClass)):
-                return AtomConcept(I_left.name, g.get_var1(), I_left.iri)
+                return AtomConcept(I_left.name, g.var1, I_left.iri)
 
             # – If g=P(x,_) and I = ∃P1 ⊑ ∃P,   then gr(g,I) = P1(x,_);
             if (isinstance(I_left, ObjectPropertyClass)):
-                return AtomRole(I_left.name, g.get_var1(), dummy_unbound_variable, False, I_left.iri)
+                return AtomRole(I_left.name, g.var1, dummy_unbound_variable, False, I_left.iri)
 
             # – If g=P(x,_) and I = ∃P1− ⊑ ∃P,  then gr(g,I) = P1(_,x);
             if (isinstance(I_left, Inverse)):
-                return AtomRole(I_left.property.name, dummy_unbound_variable, g.get_var1(), True, I_left.property.iri)
+                return AtomRole(I_left.property.name, dummy_unbound_variable, g.var1, True, I_left.property.iri)
 
-        elif ((isinstance(I_right, Inverse) and g.get_var1().get_unbound() and g.get_iri() == I_right.property.iri)):
+        elif ((isinstance(I_right, Inverse) and g.var1.unbound and g.iri == I_right.property.iri)):
             
             # – If g=P(_,x) and I = A ⊑ ∃P−,    then gr(g,I) = A(x);
             if (isinstance(I_left, ThingClass)):
-                return AtomConcept(I_left.name, g.get_var2(), I_left.iri)
+                return AtomConcept(I_left.name, g.var2, I_left.iri)
 
             # – If g=P(_,x) and I = ∃P1 ⊑ ∃P−,  then gr(g,I) = P1(x,_);
             if (isinstance(I_left, ObjectPropertyClass)):
-                return AtomRole(I_left.name, g.get_var2(), dummy_unbound_variable, False, I_left.iri)
+                return AtomRole(I_left.name, g.var2, dummy_unbound_variable, False, I_left.iri)
 
             # – If g=P(_,x) and I = ∃P1− ⊑ ∃P−,  then gr(g,I) = P1(_,x);
             if (isinstance(I_left, Inverse)):
-                return AtomRole(I_left.property.name, dummy_unbound_variable, g.get_var2(), True, I_left.property.iri)
+                return AtomRole(I_left.property.name, dummy_unbound_variable, g.var2, True, I_left.property.iri)
 
 
          # – If g=P(x1,x2) - ROLE INCLUSION
-        elif (g.get_var1().get_bound() and g.get_var2().get_bound() and not (isinstance(I_left, ThingClass))): 
+        elif (g.var1.bound and g.var2.bound and not (isinstance(I_left, ThingClass))): 
        
         # – If g=P(x1,x2) and either I = P1 ⊑ P or I = P1− ⊑ P−, then gr(g,I) = P1(x1, x2);
-            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, ObjectPropertyClass) and (g.get_iri() == I_right.iri)):
-                return AtomRole(I_left.name, g.get_var1(), g.get_var2(), False, I_left.iri)
+            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, ObjectPropertyClass) and (g.iri == I_right.iri)):
+                return AtomRole(I_left.name, g.var1, g.var2, False, I_left.iri)
 
-            if (isinstance(I_left, Inverse) and isinstance(I_right, Inverse) and g.get_iri() == I_right.property.iri):
-                return AtomRole(I_left.property.name, g.get_var1(), g.get_var2(), False, I_left.property.iri)
+            if (isinstance(I_left, Inverse) and isinstance(I_right, Inverse) and g.iri == I_right.property.iri):
+                return AtomRole(I_left.property.name, g.var1, g.var2, False, I_left.property.iri)
 
 
         # – If g=P(x1,x2) and either I = P1 ⊑ P− or P1− ⊑ P,     then gr(g,I) = P1(x2, x1).
-            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, Inverse) and (g.get_iri() == I_right.property.iri)):
-                return AtomRole(I_left.name, g.get_var2(), g.get_var1(), True, I_left.iri)
+            if (isinstance(I_left, ObjectPropertyClass) and isinstance(I_right, Inverse) and (g.iri == I_right.property.iri)):
+                return AtomRole(I_left.name, g.var2, g.var1, True, I_left.iri)
 
-            if (isinstance(I_left, Inverse) and isinstance(I_right, ObjectPropertyClass) and g.get_iri() == I_right.iri):
-                return AtomRole(I_left.property.name, g.get_var2(), g.get_var1(), True, I_left.property.iri)
+            if (isinstance(I_left, Inverse) and isinstance(I_right, ObjectPropertyClass) and g.iri == I_right.iri):
+                return AtomRole(I_left.property.name, g.var2, g.var1, True, I_left.property.iri)
 
         else:
             print("something went wrong")
@@ -164,16 +164,17 @@ def new_query(q, g, I):
 
     new_body = list()
 
-    for atom in new_q.get_body():
+    for atom in new_q.body:
+        
         #For roles
         if isinstance(atom, AtomRole):
-            if atom.get_iri() == g.get_iri() and atom.var1 == g.var1 and atom.var2 == g.var2:
+            if atom.iri == g.iri and atom.var1 == g.var1 and atom.var2 == g.var2:
                 new_body.append(entailed_atom)
             else:
                 new_body.append(atom)
         #For concepts
         elif isinstance(atom, AtomConcept):
-            if atom.get_iri() == g.get_iri() and atom.var1 == g.var1:
+            if atom.iri == g.iri and atom.var1 == g.var1:
                 new_body.append(entailed_atom)
             else:
                 new_body.append(atom)

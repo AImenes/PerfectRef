@@ -9,11 +9,11 @@ import copy
 # Recursively written in accordance with PerfectRef Paper
 
 def unify_entries(e1,e2):
-    if e1.get_bound() and e2.get_bound() and e1 == e2:
+    if e1.bound and e2.bound and e1 == e2:
         return e1
-    elif e1.get_bound() and not e2.get_bound():
+    elif e1.bound and not e2.bound:
         return e1
-    elif not e1.get_bound() and e2.get_bound():
+    elif not e1.bound and e2.bound:
         return e2
     else:
         return Variable("?_", {'is_distinguished': False, 'in_body': False, 'is_shared': False})
@@ -24,15 +24,15 @@ def unify_atoms(g1,g2):
 
     #if both are Concepts
     if isinstance(g1, AtomConcept) and isinstance(g2, AtomConcept):
-        return AtomConcept(g1.get_name(), unify_entries(g1.get_var1(), g2.get_var1()), g1.get_iri())
+        return AtomConcept(g1.name, unify_entries(g1.var1, g2.var1), g1.iri)
 
     #if both are Roles
     elif isinstance(g1, AtomRole) and isinstance(g2, AtomRole):
-        return AtomRole(g1.get_name(), unify_entries(g1.get_var1(), g2.get_var1()), unify_entries(g1.get_var2(), g2.get_var2()), g1.get_inversed(), g1.get_iri())
+        return AtomRole(g1.name, unify_entries(g1.var1, g2.var1), unify_entries(g1.var2, g2.var2), g1.inversed, g1.iri)
 
     # if both are constants
     elif isinstance(g1, AtomConstant) and isinstance(g2, AtomConstant):
-        return AtomConstant(g1.get_name(), g1.get_value(), g1.get_iri())
+        return AtomConstant(g1.name, g1.value, g1.iri)
 
     else:
         print("Error unifying atoms")

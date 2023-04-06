@@ -9,17 +9,17 @@ def export_query_to_file(PR, query, q_head):
     f.write("Entailed query:\n")
     
     for q in PR:
-        f.write(q_head.get_name() + "(" + q_head.get_var1().get_represented_name() + ") :- ")
-        length_of_q = len(q.get_body())
+        f.write(q_head.name + "(" + q_head.var1.represented_name + ") :- ")
+        length_of_q = len(q.body)
         counter = 0
-        for g in q.get_body():
+        for g in q.body:
             
             if isinstance(g, AtomConstant):
                 pass
             elif isinstance(g, AtomConcept):
-                f.write(g.get_name() + "(" + g.get_var1().get_represented_name() + ")")
+                f.write(g.name + "(" + g.var1.represented_name + ")")
             else:
-                f.write(g.get_name() + "(" + g.get_var1().get_represented_name() + "," + g.get_var2().get_org_name() + ")")
+                f.write(g.name + "(" + g.var1.represented_name + "," + g.var2.original_entry_name + ")")
 
             if (counter < length_of_q - 1):
                 f.write("^")
@@ -35,17 +35,17 @@ def print_query(PR, query, q_head):
     print("Entailed queries:\n")   
 
     for q in PR:
-            print(q_head.get_name() + "(" + q_head.get_var1().get_represented_name() + ") :- ", end=" ")
-            length_of_q = len(q.get_body())
+            print(q_head.name + "(" + q_head.var1.represented_name + ") :- ", end=" ")
+            length_of_q = len(q.body)
             counter = 0
-            for g in q.get_body():
+            for g in q.body:
                 
                 if isinstance(g, AtomConstant):
                     pass
                 elif isinstance(g, AtomConcept):
-                    print(g.get_name() + "(" + g.get_var1().get_represented_name() + ")",end="")
+                    print(g.name + "(" + g.var1.represented_name + ")",end="")
                 else:
-                    print(g.get_name() + "(" + g.get_var1().get_represented_name() + "," + g.get_var2().get_org_name() + ")",end="")
+                    print(g.name + "(" + g.var1.represented_name + "," + g.var2.original_entry_name + ")",end="")
 
                 if (counter < length_of_q - 1):
                     print("^",end="")

@@ -29,7 +29,7 @@ def perfectref(q_instance, T):
 			if not q.is_processed():
 
 				#Extract the body from the query
-				query_body = q.get_body()
+				query_body = q.body
 
 				#This is needed if the query originally contains duplicates (i.e., is not efficiently written), s.t, we dont receive a nested error.
 				if not q.contains_duplicates():

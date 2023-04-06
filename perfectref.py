@@ -6,25 +6,24 @@ from .engine.ontology_parser import import_ontology
 from .engine.iri_namespace import get_iri_and_namespace
 from .engine.atoms_obtained import get_axioms
 from .engine.perfectref_algorithm import perfectref
-from .engine.extractor import export_query_to_file, print_query
 from .engine.classes.atom import AtomConcept, AtomConstant, AtomRole
 
 
 def get_entailed_queries(ontology, string, parse = True):
 	onto = import_ontology(ontology)
-	t_box = get_axioms(onto, True)
+	tbox = get_axioms(onto, True)
 	
 	if parse:
 		q = parse_query(string)
-		q_head = q.get_head()
-		q_body = q.get_body()
+		q_head = q.head
+		q_body = q.body
 		# get IRI and namespace
 		get_iri_and_namespace(q,onto)
 	else:
 		q_head = string.get_head()
 		q_body = string.get_body()
 
-	PR = perfectref(q_body, t_box)
+	PR = perfectref(q_body, tbox)
 	
 	#Exporting the results
 	#export_query_to_file(PR, string, q_head)
@@ -36,23 +35,23 @@ def parse_output(unparsed_query, PR):
 	queries['original'] = unparsed_query
 	queries['entailed'] = []
 	q = parse_query(unparsed_query)
-	q_head = q.get_head()
+	q_head = q.head
 	
 	for cq in PR:
-		head = q_head.get_name() + "(" + q_head.get_var1().get_represented_name() + ") :- "
+		head = q_head.name + "(" + q_head.var1.represented_name + ") :- "
 		body = ""
 
-		length_of_q = len(cq.get_body())
+		length_of_q = len(cq.body)
 		counter = 0
 
-		for g in cq.get_body():
+		for g in cq.body:
 			
 			if isinstance(g, AtomConstant):
 				pass
 			elif isinstance(g, AtomConcept):
-				body += g.get_name() + "(" + g.get_var1().get_represented_name() + ")"
+				body += g.name + "(" + g.var1.represented_name + ")"
 			else:
-				body += g.get_name() + "(" + g.get_var1().get_represented_name() + "," + g.get_var2().get_org_name() + ")"
+				body += g.name + "(" + g.var1.represented_name + "," + g.var2.original_entry_name + ")"
 
 			if (counter < length_of_q - 1):
 				body += "^"

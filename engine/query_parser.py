@@ -50,14 +50,14 @@ def parse_query(query_string):
 	#Update classtypes
 	new_body = list()
 	for atom in body:
-		if atom.get_type() == "CONSTANT":
-			new_body.append(AtomConstant(atom.get_name(),atom.get_value()))
+		if atom.type == "CONSTANT":
+			new_body.append(AtomConstant(atom.name,atom.value))
 			
-		elif atom.get_type() == "CONCEPT":
-			new_body.append(AtomConcept(atom.get_name(),atom.get_var1()))
+		elif atom.type == "CONCEPT":
+			new_body.append(AtomConcept(atom.name,atom.var1))
 			
-		elif atom.get_type() == "ROLE":
-			new_body.append(AtomRole(atom.get_name(),atom.get_var1(), atom.get_var2(), False))
+		elif atom.type == "ROLE":
+			new_body.append(AtomRole(atom.name,atom.var1, atom.var2, False))
 			
 		else:
 			print("SYNTHAX ERROR")
@@ -144,8 +144,8 @@ def parse_dict_of_variables(entry_string, is_distinguished, dictionary_of_variab
 
 def initial_update_entries(atom, dict_of_variables):
 	
-	for entry in atom.get_entries():
-		e = dict_of_variables[entry.get_org_name()]
+	for entry in atom.entries:
+		e = dict_of_variables[entry.original_entry_name]
 		entry.update_values(e['is_distinguished'], e['in_body'], e['is_shared'])
 
 def update_processed_status(current_q, PR, stat):
@@ -157,10 +157,10 @@ def update_processed_status(current_q, PR, stat):
 ##UPDATE
 def update_body(body):
 	dictionary_of_variables = {}
-	for g in body.get_body():
+	for g in body.body:
 		update_atom(g, dictionary_of_variables)
 
-	[initial_update_entries(b, dictionary_of_variables) for b in body.get_body()]
+	[initial_update_entries(b, dictionary_of_variables) for b in body.body]
 
 
 	return body
@@ -168,18 +168,18 @@ def update_body(body):
 
 def update_atom(atom, dictionary_of_variables):
 	if isinstance(atom, AtomConcept):
-		update_concept(atom.get_var1(), dictionary_of_variables)
+		update_concept(atom.var1, dictionary_of_variables)
 	else:
-		update_role(atom.get_var1(), atom.get_var2(), dictionary_of_variables)
+		update_role(atom.var1, atom.var2, dictionary_of_variables)
 	
 def update_concept(var, dictionary_of_variables):
-	name = var.get_org_name()
-	parse_dict_of_variables(name, var.get_distinguished(), dictionary_of_variables)
+	name = var.original_entry_name
+	parse_dict_of_variables(name, var.distinguished, dictionary_of_variables)
 
 	
 def update_role(var1, var2, dictionary_of_variables):
-	name1 = var1.get_org_name()
-	name2 = var2.get_org_name()
-	parse_dict_of_variables(name1, var1.get_distinguished(), dictionary_of_variables)
-	parse_dict_of_variables(name2, var2.get_distinguished(), dictionary_of_variables)
+	name1 = var1.original_entry_name
+	name2 = var2.original_entry_name
+	parse_dict_of_variables(name1, var1.distinguished, dictionary_of_variables)
+	parse_dict_of_variables(name2, var2.distinguished, dictionary_of_variables)
 		
