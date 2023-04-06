@@ -144,7 +144,7 @@ def parse_dict_of_variables(entry_string, is_distinguished, dictionary_of_variab
 
 def initial_update_entries(atom, dict_of_variables):
 	
-	for entry in atom.entries:
+	for entry in atom.get_entries():
 		e = dict_of_variables[entry.original_entry_name]
 		entry.update_values(e['is_distinguished'], e['in_body'], e['is_shared'])
 
