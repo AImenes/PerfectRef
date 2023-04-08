@@ -7,7 +7,7 @@ import itertools
 import copy
 
 # # # PERFECTREF # # # 
-def perfectref(q_instance, T):
+def perfectref(q_instance, T, upper_limit):
 
 	#Making the initial query iterable
 	PR = [q_instance]
@@ -16,7 +16,7 @@ def perfectref(q_instance, T):
 	PR_prime = list()
 
 	#Run until there are no changes
-	while (PR_prime != PR):
+	while (PR_prime != PR) and len(PR) < upper_limit:
 		
 		#Make a deep copy for each iteration (is necessary in order not to mess up bounded variables for previous queries)
 		PR_prime = copy.deepcopy(PR)

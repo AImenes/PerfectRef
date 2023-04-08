@@ -9,7 +9,7 @@ from .engine.perfectref_algorithm import perfectref
 from .engine.classes.atom import AtomConcept, AtomConstant, AtomRole
 
 
-def get_entailed_queries(ontology, string, parse = True):
+def get_entailed_queries(ontology, string, upperlimit = None, parse = True):
 	onto = import_ontology(ontology)
 	tbox = get_axioms(onto, True)
 	
@@ -23,7 +23,7 @@ def get_entailed_queries(ontology, string, parse = True):
 		q_head = string.get_head()
 		q_body = string.get_body()
 
-	PR = perfectref(q_body, tbox)
+	PR = perfectref(q_body, tbox, upperlimit)
 	
 	#Exporting the results
 	#export_query_to_file(PR, string, q_head)
