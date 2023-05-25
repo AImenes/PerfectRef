@@ -27,7 +27,7 @@ def get_entailed_queries(ontology, string, upperlimit = None, parse = True):
 	
 	#Exporting the results
 	#export_query_to_file(PR, string, q_head)
-	#print_query(PR, string, q_head)
+	print_query(PR, string, q_head)
 	return PR
 
 def parse_output(unparsed_query, PR):
