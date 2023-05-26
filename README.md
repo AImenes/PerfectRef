@@ -1,7 +1,5 @@
 # PerfectRef
 
-*** This library will receive a longer README, as well as a more automated installation prosedure later
-
 PerfectRef is an algorithm for query reformulation, published in the paper 
 “Tractable Reasoning and Efficient Query Answering in Description Logics: The DL-Lite Family” [p. 414 - 422] by Calvanese et al. 
 The algorithm takes a TBox and a Conjunctive query, and outputs a union of conjunctive queries constructed using the TBox.
