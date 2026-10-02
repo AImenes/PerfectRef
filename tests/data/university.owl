@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xml:base="http://example.org/university"
+         xmlns="http://example.org/university#">
+
+<owl:Ontology rdf:about="http://example.org/university"/>
+
+<owl:ObjectProperty rdf:about="#teachesTo">
+  <owl:inverseOf rdf:resource="#isTaughtBy"/>
+  <rdfs:range rdf:resource="#Student"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#hasTutor">
+  <rdfs:range rdf:resource="#Professor"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#isTaughtBy">
+  <owl:inverseOf rdf:resource="#teachesTo"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#supervises">
+  <rdfs:subPropertyOf rdf:resource="#teachesTo"/>
+</owl:ObjectProperty>
+
+<owl:ObjectProperty rdf:about="#knows">
+  <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+</owl:ObjectProperty>
+
+<owl:Class rdf:about="#Person">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Professor">
+  <rdfs:subClassOf rdf:resource="#Person"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#teachesTo"/>
+      <owl:someValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+  <owl:disjointWith rdf:resource="#Student"/>
+</owl:Class>
+
+<owl:Class rdf:about="#Student">
+  <rdfs:subClassOf rdf:resource="#Person"/>
+  <rdfs:subClassOf>
+    <owl:Restriction>
+      <owl:onProperty rdf:resource="#hasTutor"/>
+      <owl:someValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Restriction>
+  </rdfs:subClassOf>
+</owl:Class>
+
+<owl:Class rdf:about="#Tutor">
+  <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <owl:equivalentClass>
+    <owl:Restriction>
+      <owl:onProperty>
+        <rdf:Description>
+          <owl:inverseOf rdf:resource="#hasTutor"/>
+        </rdf:Description>
+      </owl:onProperty>
+      <owl:someValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Restriction>
+  </owl:equivalentClass>
+</owl:Class>
+
+<owl:Restriction>
+  <owl:onProperty rdf:resource="#hasTutor"/>
+  <owl:someValuesFrom rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+  <rdfs:subClassOf rdf:resource="#Student"/>
+</owl:Restriction>
+
+
+</rdf:RDF>
