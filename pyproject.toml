@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "perfectref"
+version = "2.0.0"
+description = "PerfectRef: conjunctive query rewriting for DL-Lite ontologies (Calvanese et al.)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Anders Imenes" }]
+keywords = ["description logics", "DL-Lite", "query rewriting", "ontology", "OBDA", "owlready2"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Intended Audience :: Science/Research",
+]
+dependencies = ["owlready2>=0.36"]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff>=0.4"]
+
+[project.urls]
+Homepage = "https://github.com/AImenes/PerfectRef"
+Paper = "https://www.aaai.org/Papers/AAAI/2005/AAAI05-094.pdf"
+
+[project.scripts]
+perfectref = "perfectref.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["perfectref*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py39"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["B905", "UP006", "UP007", "UP035", "UP045"]  # typing module spellings keep Python 3.9 runtime support
